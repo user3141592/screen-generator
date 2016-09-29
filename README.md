@@ -53,5 +53,5 @@
 #
 # # FUTURE DEVELOPPEMENT
 #
-# v0.5  Set windows commands from a file, add shortcuts
+# v0.5  Allow to set window commands
 # v0.6  Generate more complex screenrcs than grids

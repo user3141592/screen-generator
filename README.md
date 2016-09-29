@@ -1,7 +1,7 @@
 # # SETUP
 # 
-# source screenrc-generator
-# 
+# apt-get install screen; source screenrc-generator
+#
 # # USAGE
 # 
 # screenrc-generator [-n] <X> [<Y>] [-d <PATH>] [-c <FILE WITH COMMAND LIST>
@@ -14,7 +14,7 @@
 #
 # If <X> or/and <Y> are not specified, defualt values of 2 and 1 are set and if only one number is given, then <X> is set and <Y> takes the default value of 2.
 #
-# Screen can be prevented from being lauched by adding the option -n.
+# Screen can be prevented from being lauched by adding the option -e.
 #
 # # EXAMPLES
 #
@@ -34,7 +34,6 @@
 # # OPTION
 #
 # -n    Prevent from executing screen. It only generate screen configuration file ( given by <PATH> or /tmp/.screenrc-<X>x<Y> )
-
 # -d <PATH>     Specify the destination of the generated configuration file (/tmp/.screenrc-<X>x<Y> if not mentioned )
 #
 # # VARIABLES
@@ -44,14 +43,13 @@
 #
 # # AUTHOR
 #
-# Any suggestions or remark can be sent to jean.yvan.tissot[at]gmail.com
+# Any suggestions, help or remark can be sent to jean.yvan.tissot[at]gmail.com
 #
 # # VERSION
 #
 # screenrc-generator v0.4
 #
+# FUTURE DEVELOPPEMENT
 #
-# # FUTURE DEVELOPPEMENT
-#
-# v0.5  Allow to set window commands
-# v0.6  Generate more complex screenrcs than grids
+# screenrc-generator v0.5       Allow to choose window commands
+# screenrc-generator v0.6       Generate more complex screenrcs (e.g 1+2x2)

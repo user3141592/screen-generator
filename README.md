@@ -13,7 +13,7 @@
 # 
 # # DESCRIPTION
 #  
-# screen-generator start screen and generates screenrcs by only providing window commands or the number of windows. It can for instance generate any screenrc defining a grid of <X> lines and <Y> columns.
+# screen-generator start screen and generates screenrcs by only providing window commands and try to optimize the window configuration from the provided command chain. It can also do things such as generating any screen grid of <X> lines and <Y> columns.
 #
 # Window commands can be chose by using "-c" flag with a set of commands separated by commas (e.g "bash;watch ls;watch lsblk;tcpdump") or by newlines. 
 #   
@@ -21,9 +21,7 @@
 #
 # The path of the new screen configuration file can be specified using "-d <DESTINATION PATH>". If the flag -d is not set, the location becomes /tmp/screenrc-<X>x<Y>.
 #
-# If <X or/and <Y> are not specified, default values of 2 and 1. 
-#
-# Screen can be prevented from being lauched by adding the option -n.
+# Screen can be prevented from being lauched and turn into a pure screenrc generator by adding the option -n.
 #
 # # OPTIONS
 #
@@ -38,6 +36,8 @@
 # -n                            Prevent from executing screen. It only generate screen configuration file ( given by <DESTINATION PATH> or /tmp/.screenrc-<X>x<Y> )
 #
 # -o <OPTION CHAIN>             Add lines to the screen configuration file. <OPTION CHAIN> is a chain in the format "<OPTION_1>;...;<OPTION_N>". 
+#
+# -t                            Displays the newly generated screenrc in terminal
 #
 # -v                            Activate debug mode 
 #
@@ -64,13 +64,8 @@
 #
 # # AUTHOR
 #
-# Any suggestions, help proposal or remarks are welcome at jean.yvan.tissot[at]gmail.com
+# Suggestions and remarks are welcome at jean.yvan.tissot[at]gmail.com
 #
 # # VERSION
 #
 # screen-generator v0.3.1
-#
-# FUTURE DEVELOPPEMENT
-#
-# screen-generator V0.3.3      Generate more complex screenrcs (e.g 1+2x2 for 5 windows)
-                               Optimized window configurations in the screen depending on the command chain

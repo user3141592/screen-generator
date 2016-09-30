@@ -1,0 +1,32 @@
+
+screen
+split -v
+focus right
+screen
+split -v
+focus right
+screen
+split -v
+focus right
+screen
+split -v
+focus right
+screen
+split -v
+focus right
+screen
+split -v
+focus right
+screen
+focus left
+focus left
+focus left
+focus left
+focus left
+focus left
+bindkey "^o" only
+bindkey "^j" focus down
+bindkey "^k" focus up
+bindkey "^l" focus right
+bindkey "^h" focus left
+startup_message off

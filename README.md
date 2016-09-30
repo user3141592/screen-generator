@@ -13,15 +13,15 @@
 # 
 # # DESCRIPTION
 #  
-# screen-generator lauches screen and generates screenrcs by only providing window commands or the number of windows. It can for instance generate any screenrc defining a grid of <X> lines and <Y> columns.
+# screen-generator start screen and generates screenrcs by only providing window commands or the number of windows. It can for instance generate any screenrc defining a grid of <X> lines and <Y> columns.
 #
-# Window commands can be chose by using "-c" flag with a set of commands separated by commas (e.g "bash;watch ls;watch lsblk;tcpdum") or by newlines. 
+# Window commands can be chose by using "-c" flag with a set of commands separated by commas (e.g "bash;watch ls;watch lsblk;tcpdump") or by newlines. 
 #   
-# The path of the new screen configuration file can be specified using "-d <DESTINATION PATH>". If the flag -d is not set, the location becomes /tmp/screenrc-<X>x<Y>
-#
 # The Nth command in the chain gives the command of the Nth window counting from top lef to bottom right.
 #
-# If <X or/and <Y> are not specified, defualt values of 2 and 1 are set and if only one number is given, then <X> is set and <Y> takes the default value of 2.
+# The path of the new screen configuration file can be specified using "-d <DESTINATION PATH>". If the flag -d is not set, the location becomes /tmp/screenrc-<X>x<Y>.
+#
+# If <X or/and <Y> are not specified, default values of 2 and 1. 
 #
 # Screen can be prevented from being lauched by adding the option -n.
 #

@@ -70,9 +70,3 @@ Any suggestions, help proposal or remarks are welcome at jean.yvan.tissot[at]gma
 # VERSION
 
 screen-generator v0.3.1
-
-FUTURE DEVELOPPEMENT
-
-screen-generator V0.3.3      Generate more complex screenrcs (e.g 1+2x2 for 5 windows)
-                             set prefered size of windows for most common commands
-screen-generator v0.3.4      Optimized window configurations in the screen depending on the command chain

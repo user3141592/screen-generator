@@ -58,7 +58,7 @@ Screen can be prevented from being lauched by adding the option -n.
 
 # VARIABLES
 
-DEFAULT_NUMBER_OF_COMMANDS in ./screen-generator     
+DEFAULT_NUMBER_OF_COLUMNS in ./screen-generator     
 DEFAULT_NUMBER_OF_LINES in ./screen-generator     
 DEFAULT_SHORTCUTS in ./screen-generator
 DEFAULT_OPTIONS in ./screen-generator

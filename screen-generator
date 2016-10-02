@@ -1,0 +1,372 @@
+#!/bin/bash
+#
+# # SETUP
+# 
+# $ sudo apt-get install -y screen
+# $ source screen-generator
+#
+# To have an insight of what screen-generator can do, try running
+#
+#  screen-generator -c "watch -c 'ps -e -o cmd | tac';watch df ;tcpdump;top"   
+# 
+# # USAGE
+# 
+# screen-generator [-c <COMMAND CHAIN>] [-x <X>] [-y <Y>] [-d <DESTINATION PATH>] [-n] [-v]
+# 
+# # DESCRIPTION
+#  
+# screen-generator lauches screen and generates screenrcs by only providing window commands or the number of windows. It can for instance generate any screenrc defining a grid of <X> lines and <Y> columns.
+#
+# Window commands can be chose by using "-c" flag with a set of commands separated by commas (e.g "bash;watch ls;watch lsblk;tcpdum") or by newlines. 
+#   
+# The path of the new screen configuration file can be specified using "-d <DESTINATION PATH>". If the flag -d is not set, the location becomes /tmp/screenrc-<X>x<Y>
+#
+# The Nth command in the chain gives the command of the Nth window counting from top lef to bottom right.
+#
+# If <X or/and <Y> are not specified, defualt values of 2 and 1 are set and if only one number is given, then <X> is set and <Y> takes the default value of 2.
+#
+# Screen can be prevented from being lauched by adding the option -n.
+#
+# # OPTIONS
+#
+# -c <COMMAND CHAIN>            Specify window command from a set of commands <COMMAND CHAIN> separated by commas (e.g "bash;watch ls;watch lsblk") or by a newlines.       
+#
+# -x <X>                        Specify the number of lines
+#
+# -y <Y>                        Specify the number of columns
+#
+# -d <DESTINATION PATH>         Specify the destination of the generated configuration file (/tmp/.screenrc-<X>x<Y> if not mentioned )
+#
+# -n                            Prevent from executing screen. It only generate screen configuration file ( given by <DESTINATION PATH> or /tmp/.screenrc-<X>x<Y> )
+#
+# -o <OPTION CHAIN>             Add lines to the screen configuration file. <OPTION CHAIN> is a chain in the format "<OPTION_1>;...;<OPTION_N>". 
+#
+# -v                            Activate debug mode 
+#
+# # EXAMPLES
+#
+# 1) screen-generator -c "watch ls /tmp;lsblk;tcpdump"   
+#  
+#    Open a new screen composed of a grid of 3 lines and 2 colums
+#
+# 2) screen-generator -n 5 3 -d $HOME/.screenrc
+#
+#    Replace the default configuration file of screen by a newly generated one decribing a 5x3 grid.
+#
+# # FILES
+# 
+# /tmp/screenrc-<X>x<Y>[-<COMMAND-CHAIN>]
+#
+# # VARIABLES
+#
+# DEFAULT_NUMBER_OF_COMMANDS in ./screen-generator     
+# DEFAULT_NUMBER_OF_LINES in ./screen-generator     
+# DEFAULT_SHORTCUTS in ./screen-generator
+# DEFAULT_OPTIONS in ./screen-generator
+#
+# # AUTHOR
+#
+# Any suggestions, help proposal or remarks are welcome at jean.yvan.tissot[at]gmail.com
+#
+# # VERSION
+#
+# screen-generator v0.3.1
+#
+# FUTURE DEVELOPPEMENT
+#
+# screen-generator V0.3.3      Generate more complex screenrcs (e.g 1+2x2 for 5 windows)
+#                              set prefered size of windows for most common commands
+# screen-generator v0.3.4      Optimized window configurations in the screen depending on the command chain
+
+# DEFAULT VARIALBES
+
+DEFAULT_NUMBER_OF_LINES=1
+DEFAULT_NUMBER_OF_COLUMNS=2
+DEFAULT_SHORTCUTS="
+bindkey "^o" only
+bindkey "^j" focus down
+bindkey "^k" focus up
+bindkey "^l" focus right
+bindkey "^h" focus left
+bindkey "^y" quit 
+bindkey "^s" split
+bindkey "^v" split -v
+startup_message off"
+
+# SET VARIABLES FROM FLAGS[ IMPROVE FLAG HANDLING IN LATER VERSIONS ]
+
+CHECK_c=0 
+CHECK_d=0
+CHECK_v=0
+CHECK_n=0
+CHECK_t=0
+COMMAND_CHAIN=""
+SCREEN_CONFIGURATION_FILE_GIVEN=""
+NUMBER_OF_LINES_GIVEN=""
+NUMBER_OF_COLUMNS_GIVEN=""
+NUMBER_OF_COMMANDS=0
+
+# DEFINE DEBUG ECHO FUNCTION
+
+function echo-debug(){
+    
+    if [ "$CHECK_v" -eq 1 ]
+        then
+            echo $@
+        fi
+}
+
+#!/bin/bash
+
+while [ $# -ge 1 ]
+do
+key="$1"
+
+case $key in
+
+-c)
+COMMAND_CHAIN="$2"
+shift # past argument
+
+;;
+-d)
+SCREEN_CONFIGURATION_FILE_GIVEN="$2"
+shift # past argument
+;;
+-x)
+NUMBER_OF_LINES_GIVEN="$2"
+shift # past argument
+;;
+-y)
+NUMBER_OF_COLUMNS_GIVEN="$2"
+shift # past argument
+;;
+-o)
+OPTION_CHAIN="$2"
+shift # past argument
+;;
+-n)
+CHECK_n=1
+ # past argument
+;;
+-t)
+CHECK_t=1
+ # past argument
+;;
+-v)
+CHECK_v=1
+ # past argument
+;;
+--default)
+DEFAULT=YES
+;;
+esac
+shift # past argument or value
+done
+echo-debug --------------------------------------------------------
+echo-debug initial values
+echo-debug --------------------------------------------------------
+echo-debug CHECK_n=$CHECK_n
+echo-debug CHECK_t=$CHECK_t
+echo-debug CHECK_v=$CHECK_v
+echo-debug COMMAND_CHAIN=$COMMAND_CHAIN
+echo-debug OPTION_CHAIN=$OPTION_CHAIN
+echo-debug SCREEN_CONFIGURATION_FILE_GIVEN=$SCREEN_CONFIGURATION_FILE_GIVEN
+echo-debug NUMBER_OF_LINES_GIVEN=$NUMBER_OF_LINES_GIVEN
+echo-debug NUMBER_OF_COLUMNS_GIVEN=$NUMBER_OF_COLUMNS_GIVEN
+echo-debug NUMBER_OF_COMMANDS=$NUMBER_OF_COMMANDS 
+
+# GUESS THE NUMBER OF LINES AND COLUMNS IF -c is SET
+if  ! [ -z "$COMMAND_CHAIN" ]
+    then
+NUMBER_OF_COMMANDS_GIVEN=$(($(echo $COMMAND_CHAIN  | sed 's/;$//' |sed 's/^\;//'|grep -o ";" | wc -l)+1))
+NUMBER_OF_COMMANDS=${NUMBER_OF_COMMANDS_GIVEN:-0}
+echo-debug " "
+echo-debug --------------------------------------------------------
+echo-debug NUMBER OF COMMANDS
+echo-debug --------------------------------------------------------
+echo-debug "NUMBER_OF_COMMANDS=$NUMBER_OF_COMMANDS"
+
+#N_COL=2 AND N_LINE IS GUESSED IF N_TOT<7
+if [ $NUMBER_OF_COMMANDS -lt "7" ]
+    then
+    echo-debug "assume that NUMBER_OF_COMMANDS<7"
+NUMBER_OF_COLUMNS_FOR_COMMANDS=2 
+if [[ $(($NUMBER_OF_COMMANDS % 2)) = 0 ]]
+    then
+NUMBER_OF_LINES_FOR_COMMANDS=$((NUMBER_OF_COMMANDS/2))
+    else
+NUMBER_OF_LINES_FOR_COMMANDS=$(((NUMBER_OF_COMMANDS+1)/2))
+fi
+
+#N_COL=3 AND N_LINE IS GUESSED IF N_TOT<13
+elif [ $NUMBER_OF_COMMANDS -gt 6 ]
+then
+
+NUMBER_OF_COLUMNS_FOR_COMMANDS=3
+    echo-debug "assume that NUMBER_OF_COMMANDS > 6"
+
+if [[ $(($NUMBER_OF_COMMANDS % 3)) = 0 ]]
+    then
+
+NUMBER_OF_LINES_FOR_COMMANDS=$((NUMBER_OF_COMMANDS/3))
+    elif [[ $((NUMBER_OF_COMMANDS % 3)) = 1 ]]
+    then
+    echo-debug "Adding 1 due to modulo"
+NUMBER_OF_LINES_FOR_COMMANDS=$(((NUMBER_OF_COMMANDS+1)/2))
+else
+    echo-debug "Adding 2 due to modulo"
+NUMBER_OF_LINES_FOR_COMMANDS=$(((NUMBER_OF_COMMANDS+2)/2))
+fi
+fi
+echo-debug "END OF MATHEMATICAL OPERATIONS"
+
+#TAKE DEFAULTS COLUMNS AND LINES VALUES (MODIFIED LATER IF X AND Y ARE SET
+
+else
+NUMBER_OF_LINES_FOR_COMMANDS=$DEFAULT_NUMBER_OF_LINES
+NUMBER_OF_COLUMNS_FOR_COMMANDS=$DEFAULT_NUMBER_OF_COLUMNS
+fi
+
+echo-debug --------------------------------------------------------
+echo-debug determination of the number of lines and columns
+echo-debug --------------------------------------------------------
+echo-debug NUMBER_OF_LINES_FOR_COMMANDS=$NUMBER_OF_LINES_FOR_COMMANDS
+echo-debug NUMBER_OF_COLUMNS_FOR_COMMANDS=$NUMBER_OF_COLUMNS_FOR_COMMANDS
+
+echo-debug "NUMBER_OF_COLUMNS_BEFORE_CHANGE=$NUMBER_OF_COLUMNS_FOR_COMMANDS"
+echo-debug "NUMBER_OF_LINES_BEFORE_CHANGE=$NUMBER_OF_LINES"
+
+NUMBER_OF_LINES=${NUMBER_OF_LINES_GIVEN:-$NUMBER_OF_LINES_FOR_COMMANDS} 
+NUMBER_OF_COLUMNS=${NUMBER_OF_COLUMNS_GIVEN:-$NUMBER_OF_COLUMNS_FOR_COMMANDS} 
+
+echo-debug "NUMBER_OF_COLUMNS_AFTER_CHANGE=$NUMBER_OF_COLUMNS"
+echo-debug "NUMBER_OF_LINES_AFTER_CHANGE=$NUMBER_OF_LINES"
+echo-debug --------------------------------------------------------
+echo-debug define configuration name
+echo-debug --------------------------------------------------------
+if [ "$NUMBER_OF_COMMANDS" -eq "0" ]
+    then
+echo-debug "Choosing short name for SCREEN_CONFIGURATION_FILE"
+SCREEN_CONFIGURATION_FILE=${SCREEN_CONFIGURATION_FILE_GIVEN:-/tmp/screenrc-${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}}
+else
+echo-debug "Choosing long name for SCREEN_CONFIGURATION_FILE"
+SCREEN_CONFIGURATION_FILE="${SCREEN_CONFIGURATION_FILE_GIVEN:-/tmp/screenrc-${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}-$(echo "$COMMAND_CHAIN"|sed 's/\;/_/g;s/ /-/g;s|\/|- |g'|sed 's/--/-/g'| sed "s/\'//g"|sed 's/[|]/_/g')}"
+
+    fi
+echo-debug "SCREEN_CONFIGURATION_FILE=$SCREEN_CONFIGURATION_FILE"
+#INITIALIZE THE FILE TO EMPTY FILE IN CASE NON-EMPTY
+
+echo "" > $SCREEN_CONFIGURATION_FILE
+
+# ADDING OPTIONS SPECIFIED BY -o FLAG
+
+
+if ! [ -z $OPTION_CHAIN ]
+    then
+echo "$OPTION_CHAIN"| sed 's/;$[ ]*//;s/\;/\n/g' >> $SCREEN_CONFIGURATION_FILE
+    fi
+
+# ADDING COMMANDS FROM THE COMMAND CHAIN
+LINE_NUMBER=0
+if ! [  "$NUMBER_OF_COMMANDS" -eq "0" ]
+    then
+echo-debug "Assume NUMBER_OF_COMMANDS is not 0"
+echo "$COMMAND_CHAIN"| sed 's/;$[ ]*//;s/\;/\n/g'|sed 's/^/screen /' | nl | awk ' { t = $1; $1 = $2; $2 = t; print; }'  >> $SCREEN_CONFIGURATION_FILE
+else
+    echo-debug "Assume NUMBER_OF_COMMANDS is 0"
+fi
+echo-debug --------------------------------------------------------
+echo-debug generate the screenrc
+echo-debug --------------------------------------------------------
+if [ "$NUMBER_OF_COMMANDS" -lt "$(( $NUMBER_OF_LINES * $NUMBER_OF_COLUMNS ))"  ]
+    then
+
+
+for i in $(seq $(( $NUMBER_OF_COMMANDS +1)) $(( $NUMBER_OF_LINES * $NUMBER_OF_COLUMNS)) )
+
+    do
+        echo "screen $i $SHELL" >> $SCREEN_CONFIGURATION_FILE
+    done
+echo "" >> $SCREEN_CONFIGURATION_FILE
+fi
+
+echo "select 1" >> $SCREEN_CONFIGURATION_FILE
+for j in $(seq $(($NUMBER_OF_COLUMNS-1)))
+do
+echo "split -v">> $SCREEN_CONFIGURATION_FILE
+echo "focus right">> $SCREEN_CONFIGURATION_FILE
+echo "select $(($j+1))" >> $SCREEN_CONFIGURATION_FILE
+done
+for i in $(seq $(($NUMBER_OF_COLUMNS-1)))
+do
+echo "focus left" >> $SCREEN_CONFIGURATION_FILE
+done
+for k in $(seq $(($NUMBER_OF_LINES-1)))
+do
+echo "split" >> $SCREEN_CONFIGURATION_FILE
+echo "focus down" >> $SCREEN_CONFIGURATION_FILE
+echo "select $(($NUMBER_OF_COLUMNS+$k))" >> $SCREEN_CONFIGURATION_FILE
+for j in $(seq $(($NUMBER_OF_COLUMNS-1)))
+do
+echo "focus right" >> $SCREEN_CONFIGURATION_FILE
+echo "split" >> $SCREEN_CONFIGURATION_FILE
+echo "focus down" >> $SCREEN_CONFIGURATION_FILE
+echo "select $(($NUMBER_OF_LINES+NUMBER_OF_COLUMNS+$j-1))" >> $SCREEN_CONFIGURATION_FILE
+done
+for l in $(seq $(($NUMBER_OF_COLUMNS-1)))
+do
+echo "focus left" >> $SCREEN_CONFIGURATION_FILE
+done
+done
+for i in $(seq $(($NUMBER_OF_LINES-1)) )
+do
+echo "focus up" >> $SCREEN_CONFIGURATION_FILE
+done
+
+#INCLUDE SHORTCUTS IN THE CONFIGURATION FILE
+
+
+echo $DEFAULT_OPTIONS>> $SCREEN_CONFIGURATION_FILE
+echo-debug "Shortcuts:"
+echo-debug "$DEFAULT_SHORTCUTS"
+echo "$DEFAULT_SHORTCUTS"  >> $SCREEN_CONFIGURATION_FILE
+
+if ! [ -z "$COMMAND_CHAIN" ]
+    then
+echo-debug  "Command-chain: \"$COMMAND_CHAIN\""
+fi
+
+# START SCREEN UNLESS OPTIONS -n or -t ARE SET
+
+if [ $CHECK_n -eq "0" ] && [ $CHECK_t -eq "0" ]
+then
+echo -e "\nStarting screen from $SCREEN_CONFIGURATION_FILE"
+screen -c "$SCREEN_CONFIGURATION_FILE"
+fi
+
+# CAT SCREEN CONFIGURATION FILE if -t IS SET
+
+if ! [ $CHECK_t -eq "0" ]
+then
+#PRINT HORIZONTAL LINE WITH NAME IN THE MIDDLE
+
+WORD=$SCREEN_CONFIGURATION_FILE
+NUMBER_OF_SPACES_SURROUNDING_THE_WORD=1  
+
+TERMINAL_WIDTH=$(tput cols)
+WORD_SIZE=$(echo $WORD | wc -c )
+NUMBER_OF_SPACES_SURROUNDING_THE_WORD=1
+NUMBER_OF_SYMBOLS=$((TERMINAL_WIDTH -   $WORD_SIZE - 2*$NUMBER_OF_SPACES_SURROUNDING_THE_WORD))
+echo "$COMMAND_CHAIN"| sed 's/;$[ ]*//;s/\;/\n/g'|sed 's/^/screen /' | nl | awk ' { t = $1; $1 = $2; $2 = t; print; }'  >> $SCREEN_CONFIGURATION_FILE
+LENGTH_OF_RIGHT_PART=$((NUMBER_OF_SYMBOLS/2 + $NUMBER_OF_SYMBOLS%2 ))
+LENGTH_OF_LEFT_PART=$(( $TERMINAL_WIDTH - 2*$NUMBER_OF_SPACES_SURROUNDING_THE_WORD - $WORD_SIZE - $LENGTH_OF_RIGHT_PART      ))
+
+
+printf '%*s' "$LENGTH_OF_RIGHT_PART" '' | tr " " -
+printf '%*s' $NUMBER_OF_SPACES_SURROUNDING_THE_WORD
+printf $WORD
+printf '%*s' $NUMBER_OF_SPACES_SURROUNDING_THE_WORD
+printf '%*s\n' "$((LENGTH_OF_RIGHT_PART+1))" '' | tr " " -
+cat $SCREEN_CONFIGURATION_FILE
+fi

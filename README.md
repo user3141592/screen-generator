@@ -93,5 +93,5 @@ Any bug, suggestions, help proposal or remarks can be sent to jean.yvan.tissot[a
 
 # VERSION
 
-screen-generator v0.3.1
+screen-generator v0.3.2
 

@@ -245,7 +245,7 @@ echo-debug "Choosing short name for SCREEN_CONFIGURATION_FILE"
 SCREEN_CONFIGURATION_FILE=${SCREEN_CONFIGURATION_FILE_GIVEN:-/tmp/screenrc-${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}}
 else
 echo-debug "Choosing long name for SCREEN_CONFIGURATION_FILE"
-SCREEN_CONFIGURATION_FILE="${SCREEN_CONFIGURATION_FILE_GIVEN:-/tmp/screenrc-${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}-$(echo "$COMMAND_CHAIN"|sed 's/\;/_/g;s/ /-/g;s|\/|- |g'|sed 's/--/-/g'| sed "s/\'//g"|sed 's/[|]/_/g')}"
+SCREEN_CONFIGURATION_FILE="${SCREEN_CONFIGURATION_FILE_GIVEN:-/tmp/screenrc-${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}-$(echo "$COMMAND_CHAIN"|sed 's/\;/_/g;s/ /-/g;s|\/|- |g;s/\*/-/g'|sed 's/--/-/g'| sed "s/\'//g"|sed 's/[|]/_/g')}"
 
     fi
 echo-debug "SCREEN_CONFIGURATION_FILE=$SCREEN_CONFIGURATION_FILE"
@@ -352,7 +352,7 @@ TERMINAL_WIDTH=$(tput cols)
 WORD_SIZE=$(echo $WORD | wc -c )
 NUMBER_OF_SPACES_SURROUNDING_THE_WORD=1
 NUMBER_OF_SYMBOLS=$((TERMINAL_WIDTH -   $WORD_SIZE - 2*$NUMBER_OF_SPACES_SURROUNDING_THE_WORD))
-echo "$COMMAND_CHAIN"| sed 's/;$[ ]*//;s/\;/\n/g'|sed 's/^/screen /' | nl | awk ' { t = $1; $1 = $2; $2 = t; print; }'  >> $SCREEN_CONFIGURATION_FILE
+echo "$COMMAND_CHAIN"| sed 's/;[ ]*$//;s/;/\n/g'|sed 's/^/screen /' | nl | awk ' { t = $1; $1 = $2; $2 = t; print; }'  >> $SCREEN_CONFIGURATION_FILE
 LENGTH_OF_RIGHT_PART=$((NUMBER_OF_SYMBOLS/2 + $NUMBER_OF_SYMBOLS%2 ))
 LENGTH_OF_LEFT_PART=$(( $TERMINAL_WIDTH - 2*$NUMBER_OF_SPACES_SURROUNDING_THE_WORD - $WORD_SIZE - $LENGTH_OF_RIGHT_PART      ))
 

@@ -345,11 +345,11 @@ echo "$DEFAULT_SHORTCUTS">> $SCREEN_CONFIGURATION_FILE
 if [ $CHECK_t -eq "0" ]
     then
 echo -n "Configuration file of size ${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}" 
-if ! [ -z $COMMAND_CHAIN ]
+if ! [ -z "$COMMAND_CHAIN" ]
     then
-echo  " with command chain \"$COMMAND_CHAIN\""
+echo -n " with command chain \"$COMMAND_CHAIN\""
 fi
-echo -n "generated at $(readlink -f $SCREEN_CONFIGURATION_FILE)"
+echo -n " generated at $(readlink -f $SCREEN_CONFIGURATION_FILE)"
 fi
 
 # START SCREEN UNLESS OPTION -n IS SET

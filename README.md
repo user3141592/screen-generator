@@ -80,7 +80,7 @@ The option -t allow to print the newly generated screen on the terminal.
 
 # VARIABLES
 
-DEFAULT_NUMBER_OF_COMMANDS in ./screen-generator     
+DEFAULT_NUMBER_OF_COLUMNS in ./screen-generator     
 DEFAULT_NUMBER_OF_LINES in ./screen-generator     
 DEFAULT_SHORTCUTS in ./screen-generator
 DEFAULT_OPTIONS in ./screen-generator

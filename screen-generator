@@ -9,13 +9,19 @@
 #
 #  screen-generator -c "watch -c 'ps -e -o cmd | tac';watch df ;tcpdump;top"   
 # 
-# # USAGE
+# # NAME
 # 
+# screen-generator - generate screenrc and launch screen with given command chain
+#
+# SYNOPSIS
+#
 # screen-generator [-c <COMMAND CHAIN>] [-x <X>] [-y <Y>] [-d <DESTINATION PATH>] [-n] [-v]
 # 
 # # DESCRIPTION
 #  
-# screen-generator lauches screen and generates screenrcs by only providing window commands or the number of windows. It can for instance generate any screenrc defining a grid of <X> lines and <Y> columns.
+# screen-generator generates screenr configuration file by only providing window commands. screen-generator automatically find the number of windows needed given the command chains.
+#
+# The number of windows can also be specifed in alone or in conjunction with a command chain. It can for instace generate any screenrc defining a grid of <X> lines and <Y> columns.
 #
 # Window commands can be chose by using "-c" flag with a set of commands separated by commas (e.g "bash;watch ls;watch lsblk;tcpdum") or by newlines. 
 #   
@@ -23,25 +29,31 @@
 #
 # The Nth command in the chain gives the command of the Nth window counting from top lef to bottom right.
 #
-# If <X or/and <Y> are not specified, defualt values of 2 and 1 are set and if only one number is given, then <X> is set and <Y> takes the default value of 2.
+# The number of windows is automatically guessed depending on the command chain but can also be set using -x and -y flags.
+#
+# If no command chain nor screen size is given, default values of 1 and 2 are taken (given by variables DEFAULT_NUMBER_OF_LINES and DEFAULT_NUMBER_OF_COLUMNS. 
 #
 # Screen can be prevented from being lauched by adding the option -n.
 #
+# The option -t allow to print the newly generated screen on the terminal.
+#
 # # OPTIONS
 #
-# -c <COMMAND CHAIN>            Specify window command from a set of commands <COMMAND CHAIN> separated by commas (e.g "bash;watch ls;watch lsblk") or by a newlines.       
+# -c <COMMAND CHAIN>            Specify window command from a set of commands <COMMAND CHAIN> separated by commas (e.g "bash;watch ls;watch lsblk") or by a newlines.      
 #
-# -x <X>                        Specify the number of lines
+# -x <X>                        Specify the number of lines. This will overwrite the value guessed if command chain is given.
 #
-# -y <Y>                        Specify the number of columns
+# -y <Y>                        Specify the number of columns. This will overwrite the value guessed if command chain is given.
 #
-# -d <DESTINATION PATH>         Specify the destination of the generated configuration file (/tmp/.screenrc-<X>x<Y> if not mentioned )
+# -d <DESTINATION PATH>         Specify the destination of the generated configuration file (/tmp/.screenrc-<X>x<Y>-<ADJUSTED COMMAND CHAIN STRING> if not mentioned )
 #
 # -n                            Prevent from executing screen. It only generate screen configuration file ( given by <DESTINATION PATH> or /tmp/.screenrc-<X>x<Y> )
 #
 # -o <OPTION CHAIN>             Add lines to the screen configuration file. <OPTION CHAIN> is a chain in the format "<OPTION_1>;...;<OPTION_N>". 
 #
-# -v                            Activate debug mode 
+# -t                            Print the newly generated screen configuration file on terminal and prevent screen from running.
+#
+# -v                            Activate debug mode. 
 #
 # # EXAMPLES
 #
@@ -59,7 +71,7 @@
 #
 # # VARIABLES
 #
-# DEFAULT_NUMBER_OF_COLUMNS in ./screen-generator     
+# DEFAULT_NUMBER_OF_COMMANDS in ./screen-generator     
 # DEFAULT_NUMBER_OF_LINES in ./screen-generator     
 # DEFAULT_SHORTCUTS in ./screen-generator
 # DEFAULT_OPTIONS in ./screen-generator
@@ -71,13 +83,28 @@
 # # VERSION
 #
 # screen-generator v0.3.1
+#
+#@@ 
+# FUTURE DEVELOPPEMENT
+#
+# screen-generator V0.3.3      Generate more complex screenrcs (e.g 1+2x2 for 5 windows)
+#                              set prefered size of windows for most common commands
+# screen-generator v0.3.4      Optimized window configurations in the screen depending on the command chain
 
-# DEFAULT VARIALBES
+# DEFINE DEBUG ECHO FUNCTION
+
+function echo-debug(){
+    
+    if [ "$CHECK_v" -eq 1 ]
+        then
+            echo $@
+        fi
+}
+# DEFINE DEFAULT VARIALBES
 
 DEFAULT_NUMBER_OF_LINES=1
 DEFAULT_NUMBER_OF_COLUMNS=2
-DEFAULT_SHORTCUTS="
-bindkey "^o" only
+DEFAULT_SHORTCUTS='bindkey "^o" only
 bindkey "^j" focus down
 bindkey "^k" focus up
 bindkey "^l" focus right
@@ -85,7 +112,7 @@ bindkey "^h" focus left
 bindkey "^y" quit 
 bindkey "^s" split
 bindkey "^v" split -v
-startup_message off"
+startup_message off'
 
 # SET VARIABLES FROM FLAGS[ IMPROVE FLAG HANDLING IN LATER VERSIONS ]
 
@@ -100,15 +127,6 @@ NUMBER_OF_LINES_GIVEN=""
 NUMBER_OF_COLUMNS_GIVEN=""
 NUMBER_OF_COMMANDS=0
 
-# DEFINE DEBUG ECHO FUNCTION
-
-function echo-debug(){
-    
-    if [ "$CHECK_v" -eq 1 ]
-        then
-            echo $@
-        fi
-}
 
 #!/bin/bash
 
@@ -121,7 +139,6 @@ case $key in
 -c)
 COMMAND_CHAIN="$2"
 shift # past argument
-
 ;;
 -d)
 SCREEN_CONFIGURATION_FILE_GIVEN="$2"
@@ -157,6 +174,7 @@ DEFAULT=YES
 esac
 shift # past argument or value
 done
+
 echo-debug --------------------------------------------------------
 echo-debug initial values
 echo-debug --------------------------------------------------------
@@ -245,13 +263,14 @@ echo-debug "Choosing short name for SCREEN_CONFIGURATION_FILE"
 SCREEN_CONFIGURATION_FILE=${SCREEN_CONFIGURATION_FILE_GIVEN:-/tmp/screenrc-${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}}
 else
 echo-debug "Choosing long name for SCREEN_CONFIGURATION_FILE"
-SCREEN_CONFIGURATION_FILE="${SCREEN_CONFIGURATION_FILE_GIVEN:-/tmp/screenrc-${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}-$(echo "$COMMAND_CHAIN"|sed 's/\;/_/g;s/ /-/g;s|\/|- |g;s/\*/-/g'|sed 's/--/-/g'| sed "s/\'//g"|sed 's/[|]/_/g')}"
-
+SCREEN_CONFIGURATION_FILE=${SCREEN_CONFIGURATION_FILE_GIVEN:-/tmp/screenrc-${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}-$(echo "$COMMAND_CHAIN"|sed 's/\;/_/g;s/ /-/g;s#/#-#g;s/--/-/g'|sed "s/'//g"|sed -r 's/[|]/_/g' )} 
     fi
 echo-debug "SCREEN_CONFIGURATION_FILE=$SCREEN_CONFIGURATION_FILE"
+
 #INITIALIZE THE FILE TO EMPTY FILE IN CASE NON-EMPTY
 
 echo "" > $SCREEN_CONFIGURATION_FILE
+
 
 # ADDING OPTIONS SPECIFIED BY -o FLAG
 
@@ -262,10 +281,11 @@ echo "$OPTION_CHAIN"| sed 's/;$[ ]*//;s/\;/\n/g' >> $SCREEN_CONFIGURATION_FILE
     fi
 
 # ADDING COMMANDS FROM THE COMMAND CHAIN
+
 LINE_NUMBER=0
 if ! [  "$NUMBER_OF_COMMANDS" -eq "0" ]
     then
-echo-debug "Assume NUMBER_OF_COMMANDS is not 0"
+echo-debug "Assume NUMBER_OF_COMMANDS is 0"
 echo "$COMMAND_CHAIN"| sed 's/;$[ ]*//;s/\;/\n/g'|sed 's/^/screen /' | nl | awk ' { t = $1; $1 = $2; $2 = t; print; }'  >> $SCREEN_CONFIGURATION_FILE
 else
     echo-debug "Assume NUMBER_OF_COMMANDS is 0"
@@ -275,7 +295,6 @@ echo-debug generate the screenrc
 echo-debug --------------------------------------------------------
 if [ "$NUMBER_OF_COMMANDS" -lt "$(( $NUMBER_OF_LINES * $NUMBER_OF_COLUMNS ))"  ]
     then
-
 
 for i in $(seq $(( $NUMBER_OF_COMMANDS +1)) $(( $NUMBER_OF_LINES * $NUMBER_OF_COLUMNS)) )
 
@@ -322,45 +341,44 @@ done
 
 
 echo $DEFAULT_OPTIONS>> $SCREEN_CONFIGURATION_FILE
-echo-debug "Shortcuts:"
-echo-debug "$DEFAULT_SHORTCUTS"
-echo "$DEFAULT_SHORTCUTS"  >> $SCREEN_CONFIGURATION_FILE
-
-if ! [ -z "$COMMAND_CHAIN" ]
+echo "$DEFAULT_SHORTCUTS">> $SCREEN_CONFIGURATION_FILE
+if [ $CHECK_t -eq "0" ]
     then
-echo-debug  "Command-chain: \"$COMMAND_CHAIN\""
+echo -n "Configuration file of size ${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}" 
+if ! [ -z $COMMAND_CHAIN ]
+    then
+echo  " with command chain \"$COMMAND_CHAIN\""
+fi
+echo -n "generated at $(readlink -f $SCREEN_CONFIGURATION_FILE)"
 fi
 
-# START SCREEN UNLESS OPTIONS -n or -t ARE SET
+# START SCREEN UNLESS OPTION -n IS SET
 
 if [ $CHECK_n -eq "0" ] && [ $CHECK_t -eq "0" ]
 then
 echo -e "\nStarting screen from $SCREEN_CONFIGURATION_FILE"
-screen -c "$SCREEN_CONFIGURATION_FILE"
+screen -c $SCREEN_CONFIGURATION_FILE
 fi
 
 # CAT SCREEN CONFIGURATION FILE if -t IS SET
 
 if ! [ $CHECK_t -eq "0" ]
 then
-#PRINT HORIZONTAL LINE WITH NAME IN THE MIDDLE
+
+# PRINT HORIZONTAL LINE WITH WORD IN THE MIDDLE
 
 WORD=$SCREEN_CONFIGURATION_FILE
-NUMBER_OF_SPACES_SURROUNDING_THE_WORD=1  
-
-TERMINAL_WIDTH=$(tput cols)
-WORD_SIZE=$(echo $WORD | wc -c )
 NUMBER_OF_SPACES_SURROUNDING_THE_WORD=1
-NUMBER_OF_SYMBOLS=$((TERMINAL_WIDTH -   $WORD_SIZE - 2*$NUMBER_OF_SPACES_SURROUNDING_THE_WORD))
-echo "$COMMAND_CHAIN"| sed 's/;[ ]*$//;s/;/\n/g'|sed 's/^/screen /' | nl | awk ' { t = $1; $1 = $2; $2 = t; print; }'  >> $SCREEN_CONFIGURATION_FILE
-LENGTH_OF_RIGHT_PART=$((NUMBER_OF_SYMBOLS/2 + $NUMBER_OF_SYMBOLS%2 ))
-LENGTH_OF_LEFT_PART=$(( $TERMINAL_WIDTH - 2*$NUMBER_OF_SPACES_SURROUNDING_THE_WORD - $WORD_SIZE - $LENGTH_OF_RIGHT_PART      ))
-
+TERMINAL_WIDTH=$(tput cols)
+WORD_SIZE=$(($(echo $@ | wc -c ) -1 ))
+NUMBER_OF_SYMBOLS=$(( $TERMINAL_WIDTH - $WORD_SIZE - 2*$NUMBER_OF_SPACES_SURROUNDING_THE_WORD ))
+LENGTH_OF_RIGHT_PART=$((NUMBER_OF_SYMBOLS/2 + $NUMBER_OF_SYMBOLS%2/2 ))
+LENGTH_OF_LEFT_PART=$(( $TERMINAL_WIDTH - $WORD_SIZE -2*NUMBER_OF_SPACES_SURROUNDING_THE_WORD - $LENGTH_OF_RIGHT_PART      ))
 
 printf '%*s' "$LENGTH_OF_RIGHT_PART" '' | tr " " -
 printf '%*s' $NUMBER_OF_SPACES_SURROUNDING_THE_WORD
 printf $WORD
 printf '%*s' $NUMBER_OF_SPACES_SURROUNDING_THE_WORD
-printf '%*s\n' "$((LENGTH_OF_RIGHT_PART+1))" '' | tr " " -
+printf '%*s\n' "$LENGTH_OF_LEFT_PART" '' | tr " " -
 cat $SCREEN_CONFIGURATION_FILE
 fi

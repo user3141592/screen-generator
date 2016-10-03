@@ -57,7 +57,7 @@
 #
 # -t                            Print the newly generated screen configuration file on terminal and prevent screen from running.
 #
-# -h|--help                     Show help
+# -h, --help                    Display help
 #
 # -v                            Activate debug mode. 
 #
@@ -127,6 +127,7 @@ CHECK_d=0
 CHECK_v=0
 CHECK_n=0
 CHECK_t=0
+CHECK_h=0
 COMMAND_CHAIN=""
 SCREEN_CONFIGURATION_FILE_GIVEN=""
 NUMBER_OF_LINES_GIVEN=""
@@ -172,10 +173,10 @@ CHECK_t=1
 ;;
 -v)
 CHECK_v=1
- # past argument
 ;;
---default)
-DEFAULT=YES
+ # past argument
+-h|--help)
+CHECK_h=1
 ;;
 esac
 shift # past argument or value
@@ -193,6 +194,24 @@ echo-debug SCREEN_CONFIGURATION_FILE_GIVEN=$SCREEN_CONFIGURATION_FILE_GIVEN
 echo-debug NUMBER_OF_LINES_GIVEN=$NUMBER_OF_LINES_GIVEN
 echo-debug NUMBER_OF_COLUMNS_GIVEN=$NUMBER_OF_COLUMNS_GIVEN
 echo-debug NUMBER_OF_COMMANDS=$NUMBER_OF_COMMANDS 
+
+#DISPLAY HELP IF -h or --help FLAGS ARE SET
+
+if [ $CHECK_h -eq 1 ]
+then
+    echo -ne '
+-c <COMMAND CHAIN>            Specify window command from a set of commands <COMMAND CHAIN> separated by commas (e.g "bash;watch ls;watch lsblk") or by a newlines. 
+-x <X>                        Specify the number of lines. This will overwrite the value guessed if command chain is given.
+-y <Y>                        Specify the number of columns. This will overwrite the value guessed if command chain is given.
+-d <DESTINATION PATH>         Specify the destination of the generated configuration file (/tmp/.screenrc-<X>x<Y>-<ADJUSTED COMMAND CHAIN STRING> if not mentioned )
+-n                            Prevent from executing screen. It only generate screen configuration file ( given by <DESTINATION PATH> or /tmp/.screenrc-<X>x<Y> )
+-o <OPTION CHAIN>             Add lines to the screen configuration file. <OPTION CHAIN> is a chain in the format "<OPTION_1>;...;<OPTION_N>". 
+-t                            Print the newly generated screen configuration file on terminal and prevent screen from running.
+-h, --help                    Display help
+-v                            Activate debug mode.\n'
+
+ else
+
 
 # GUESS THE NUMBER OF LINES AND COLUMNS IF -c is SET
 if  ! [ -z "$COMMAND_CHAIN" ]
@@ -388,3 +407,5 @@ printf '%*s' $NUMBER_OF_SPACES_SURROUNDING_THE_WORD
 printf '%*s\n' "$LENGTH_OF_LEFT_PART" '' | tr " " -
 cat $SCREEN_CONFIGURATION_FILE
 fi
+
+fi #help

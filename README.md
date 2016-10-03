@@ -2,6 +2,7 @@
 # SETUP
 
 $ git clone https://github.com/boddhissattva/screen-generator
+
 $ cd screen-generator
 $ chmod u+rx screen-generator
 $ sudo apt-get install -y screen

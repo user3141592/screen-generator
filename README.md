@@ -25,6 +25,8 @@ screen-generator generates screen configuration files by only providing window c
 The number of windows can also be specifed in alone or in conjunction with a command chain. It can for instace generate any screenrc defining a grid of <X> lines and <Y> columns.
 
 Window commands can be chose by using "-c" flag with a set of commands separated by commas (e.g "bash;watch ls;watch lsblk;tcpdum") or by newlines. 
+
+If no command chain is given, window commands become the default shell $SHELL.
   
 The path of the new screen configuration file can be specified using "-d <DESTINATION PATH>". If the flag -d is not set, the location becomes /tmp/screenrc-<X>x<Y>
 
@@ -40,7 +42,7 @@ The option -t allow to print the newly generated screen on the terminal.
 
 # OPTIONS
 
--c <COMMAND CHAIN>            Specify window command from a set of commands <COMMAND CHAIN> separated by commas (e.g "bash;watch ls;watch lsblk") or by a newlines.      
+-c <COMMAND CHAIN>            Specify window command from a set of commands <COMMAND CHAIN> separated by commas (e.g "bash;watch ls;watch lsblk") or by a newlines. 
 
 -x <X>                        Specify the number of lines. This will overwrite the value guessed if command chain is given.
 
@@ -60,11 +62,11 @@ The option -t allow to print the newly generated screen on the terminal.
 
 1) screen-generator -c "watch ls /tmp;lsblk;tcpdump"   
  
-   Open a new screen composed of a grid of 3 lines and 2 colums
+   Open a new screen composed of a grid of 2 lines and 2 colums
 
-2) screen-generator -n 5 3 -d $HOME/.screenrc
+2) screen-generator -n -x 5 -y 3 -d $HOME/.screenrc
 
-   Replace the default configuration file of screen by a newly generated one decribing a 5x3 grid.
+   Replace the default configuration file of screen by a newly generated one decribing a 5x3 grid with $SHELL as window command.
 
 # FILES
 

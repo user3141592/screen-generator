@@ -21,7 +21,7 @@ screen-generator - generates screen configuration files and launches screen by s
 
 # SYNOPSIS
 
-screen-generator [-c <COMMAND CHAIN>] [-x <X>] [-y <Y>] [-d <DESTINATION PATH>] [-n] [-v]
+screen-generator [-c COMMAND CHAIN] [-x X] [-y Y] [-d DESTINATION PATH] [-n] [-v]
 
 # DESCRIPTION
  

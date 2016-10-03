@@ -27,13 +27,13 @@ screen-generator [-c COMMAND CHAIN] [-x X] [-y Y] [-d DESTINATION PATH] [-n] [-v
  
 screen-generator generates screen configuration files by only providing window commands. screen-generator automatically find the number of windows needed given the command chains.
 
-The number of windows can also be specifed in alone or in conjunction with a command chain. It can for instance generate any screenrc defining a grid of <X> lines and <Y> columns.
+The number of windows can also be specifed in alone or in conjunction with a command chain. It can for instance generate any screenrc defining a grid of X lines and Y columns.
 
 Window commands can be chose by using "-c" flag with a set of commands separated by commas (e.g "bash;watch ls;watch lsblk;tcpdum") or by newlines. 
 
 If no command chain is given, window commands become the default shell $SHELL.
   
-The path of the new screen configuration file can be specified using "-d <DESTINATION PATH>". If the flag -d is not set, the location becomes /tmp/screenrc-<X>x<Y>
+The path of the new screen configuration file can be specified using "-d DESTINATION PATH". If the flag -d is not set, the location becomes /tmp/screenrc-XxY
 
 The Nth command in the chain gives the command of the Nth window counting from top lef to bottom right.
 
@@ -47,17 +47,17 @@ The option -t allow to print the newly generated screen on the terminal.
 
 # OPTIONS
 
--c <COMMAND CHAIN>            Specify window command from a set of commands <COMMAND CHAIN> separated by commas (e.g "bash;watch ls;watch lsblk") or by a newlines. 
+-c COMMAND CHAIN            Specify window command from a set of commands COMMAND CHAIN separated by commas (e.g "bash;watch ls;watch lsblk") or by a newlines. 
 
--x <X>                        Specify the number of lines. This will overwrite the value guessed if command chain is given.
+-x X                        Specify the number of lines. This will overwrite the value guessed if command chain is given.
 
--y <Y>                        Specify the number of columns. This will overwrite the value guessed if command chain is given.
+-y Y                        Specify the number of columns. This will overwrite the value guessed if command chain is given.
 
--d <DESTINATION PATH>         Specify the destination of the generated configuration file (/tmp/.screenrc-<X>x<Y>-<ADJUSTED COMMAND CHAIN STRING> if not mentioned )
+-d DESTINATION PATH         Specify the destination of the generated configuration file (/tmp/.screenrc-XxY-ADJUSTED COMMAND CHAIN STRING if not mentioned )
 
--n                            Prevent from executing screen. It only generate screen configuration file ( given by <DESTINATION PATH> or /tmp/.screenrc-<X>x<Y> )
+-n                            Prevent from executing screen. It only generate screen configuration file ( given by DESTINATION PATH or /tmp/.screenrc-XxY )
 
--o <OPTION CHAIN>             Add lines to the screen configuration file. <OPTION CHAIN> is a chain in the format "<OPTION_1>;...;<OPTION_N>". 
+-o OPTION CHAIN             Add lines to the screen configuration file. OPTION CHAIN is a chain in the format "OPTION_1;...;OPTION_N". 
 
 -t                            Print the newly generated screen configuration file on terminal and prevent screen from running.
 
@@ -77,7 +77,7 @@ The option -t allow to print the newly generated screen on the terminal.
 
 # FILES
 
-/tmp/screenrc-<X>x<Y>[-<COMMAND-CHAIN>]
+/tmp/screenrc-XxY-COMMAND-CHAIN
 
 # VARIABLES
 

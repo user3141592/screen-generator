@@ -69,7 +69,7 @@ The option -t allow to print the newly generated screen on the terminal.
 
 1) screen-generator -c "watch ls /tmp;lsblk;tcpdump"   
  
-   Open a new screen composed of a grid of 2 lines and 2 colums
+   Open a new screen composed of a grid of 2 lines and 2 colums with the specified commands
 
 2) screen-generator -n -x 5 -y 3 -d $HOME/.screenrc
 

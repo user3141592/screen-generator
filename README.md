@@ -85,9 +85,9 @@ DEFAULT_NUMBER_OF_LINES in ./screen-generator
 DEFAULT_SHORTCUTS in ./screen-generator
 DEFAULT_OPTIONS in ./screen-generator
 
-# AUTHOR
+# BUG
 
-Any suggestions, help proposal or remarks are welcome at jean.yvan.tissot[at]gmail.com
+Any bug, suggestions, help proposal or remarks can be sent to jean.yvan.tissot[at]gmail.com
 
 # VERSION
 

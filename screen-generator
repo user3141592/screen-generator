@@ -86,9 +86,9 @@
 # DEFAULT_SHORTCUTS in ./screen-generator
 # DEFAULT_OPTIONS in ./screen-generator
 #
-# # AUTHOR
+# # BUG
 #
-# Any suggestions, help proposal or remarks are welcome at jean.yvan.tissot[at]gmail.com
+# Any bug, suggestions, help proposal or remarks can be sent to jean.yvan.tissot[at]gmail.com
 #
 # # VERSION
 #
@@ -292,11 +292,14 @@ echo-debug "Choosing short name for SCREEN_CONFIGURATION_FILE"
 SCREEN_CONFIGURATION_FILE=${SCREEN_CONFIGURATION_FILE_GIVEN:-/tmp/screenrc-${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}}
 else
 echo-debug "Choosing long name for SCREEN_CONFIGURATION_FILE"
-SCREEN_CONFIGURATION_FILE=${SCREEN_CONFIGURATION_FILE_GIVEN:-/tmp/screenrc-${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}-$(echo "$COMMAND_CHAIN"|sed 's/\;/_/g;s/ /-/g;s#/#-#g;s/--/-/g'|sed "s/'//g"|sed -r 's/[|]/_/g' )} 
+SCREEN_CONFIGURATION_FILE=${SCREEN_CONFIGURATION_FILE_GIVEN:-/tmp/screenrc-${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}-$(echo "$COMMAND_CHAIN"|sed 's/\;/_/g;s/ /-/g;s#/#-#g;s/--/-/g'|sed "s/'//g"|sed -r 's/[|]/_/g' )}  # FILNAME OF MORE THAN 256 CHARACTERS ARE NOT ALLOWED
     fi
+echo-debug "SCREEN_CONFIGURATION_FILE=$SCREEN_CONFIGURATION_FILE"
+SCREEN_CONFIGURATION_FILE=$(echo SCREEN_CONFIGURATION_FILE | colrm 205)
 echo-debug "SCREEN_CONFIGURATION_FILE=$SCREEN_CONFIGURATION_FILE"
 
 #INITIALIZE THE FILE TO EMPTY FILE IN CASE NON-EMPTY
+echo still ok
 
 echo "" > $SCREEN_CONFIGURATION_FILE
 

@@ -1,4 +1,3 @@
-
 # SETUP
 
 $ git clone https://github.com/boddhissattva/screen-generator

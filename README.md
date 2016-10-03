@@ -56,6 +56,8 @@ The option -t allow to print the newly generated screen on the terminal.
 
 -t                            Print the newly generated screen configuration file on terminal and prevent screen from running.
 
+-h|--help                     Show help
+
 -v                            Activate debug mode. 
 
 # EXAMPLES

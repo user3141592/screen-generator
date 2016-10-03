@@ -1,16 +1,18 @@
 
 # SETUP
 
+$ git clone https://github.com/boddhissattva/screen-generator
+$ cd screen-generator
+$ chmod u+rx screen-generator
 $ sudo apt-get install -y screen
-$ source screen-generator
 
 To have an insight of what screen-generator can do, try running
 
- screen-generator -c "watch -c 'ps -e -o cmd | tac';watch df ;tcpdump;top"   
+$ ./screen-generator -c "watch -c 'ps -e -o cmd | tac';watch df ;tcpdump;top"   
 
 # NAME
 
-screen-generator - generate screenrc and launch screen with given command chain
+screen-generator -generates screen configuration files and launches screen by simply providing a chain of commands
 
 SYNOPSIS
 

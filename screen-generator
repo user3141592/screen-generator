@@ -10,6 +10,10 @@
 # To have an insight of what screen-generator can do, try running
 #
 # $ ./screen-generator -c "watch -c 'ps -e -o cmd | tac';watch df ;tcpdump;top"   
+#
+# To install the manual , run
+#
+# $ cp screen-generator.1.gz /usr/local/man/man1/
 # 
 # # NAME
 # 

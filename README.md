@@ -12,7 +12,7 @@ $ ./screen-generator -c "watch -c 'ps -e -o cmd | tac';watch df ;tcpdump;top"
 
 # NAME
 
-screen-generator -generates screen configuration files and launches screen by simply providing a chain of commands
+screen-generator - generates screen configuration files and launches screen by simply providing a chain of commands
 
 SYNOPSIS
 
@@ -20,7 +20,7 @@ screen-generator [-c <COMMAND CHAIN>] [-x <X>] [-y <Y>] [-d <DESTINATION PATH>] 
 
 # DESCRIPTION
  
-screen-generator generates screenr configuration file by only providing window commands. screen-generator automatically find the number of windows needed given the command chains.
+screen-generator generates screen configuration files by only providing window commands. screen-generator automatically find the number of windows needed given the command chains.
 
 The number of windows can also be specifed in alone or in conjunction with a command chain. It can for instace generate any screenrc defining a grid of <X> lines and <Y> columns.
 

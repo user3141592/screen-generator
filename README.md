@@ -12,13 +12,14 @@ $ ./screen-generator -c "watch -c 'ps -e -o cmd | tac';watch df ;tcpdump;top"
 
 To install the manual , run
 
-$ cp screen-generator.1.gz /usr/local/man/man1/
+$ cp ./screen-generator.1.gz /usr/local/man/man1/
+$ man screen-generator
 
 # NAME
 
 screen-generator - generates screen configuration files and launches screen by simply providing a chain of commands
 
-SYNOPSIS
+# SYNOPSIS
 
 screen-generator [-c <COMMAND CHAIN>] [-x <X>] [-y <Y>] [-d <DESTINATION PATH>] [-n] [-v]
 

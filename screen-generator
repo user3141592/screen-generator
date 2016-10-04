@@ -241,7 +241,7 @@ LINE_NUMBER=0
 if ! [  "$NUMBER_OF_COMMANDS" -eq "0" ]
     then
 echo-debug "Assume NUMBER_OF_COMMANDS is not 0"
-echo "$COMMAND_CHAIN"| sed -e 's/;$//;s/\;/\n/g' -e "s/^[ ]*ls /watch ls /" -e 's/^/screen /' | nl | awk ' { t = $1; $1 = $2; $2 = t; print; }'  >> $SCREEN_CONFIGURATION_FILE
+echo "$COMMAND_CHAIN"| sed -e 's/;$//;s/\;/\n/g' -|sed 's/[ ]*cat /less /'|sed  "s/^[ ]*ls /watch ls /"|sed 's/^/screen /' | nl | awk ' { t = $1; $1 = $2; $2 = t; print; }'  >> $SCREEN_CONFIGURATION_FILE
 else
     echo-debug "Assume NUMBER_OF_COMMANDS is 0"
 fi

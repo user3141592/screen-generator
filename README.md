@@ -30,7 +30,7 @@ sudo apt-get install screen-generator`
 
 * `man screen-genrator` or `man -l screen-generator.1` if not installed
 
-* `./screen-generator --help
+* `./screen-generator --help`
 
 * `./examples/*`
 

@@ -20,7 +20,7 @@ $ sudo cp ./screen-generator.1.gz /usr/local/man/man1/  `
 
 ## 2) PPA PACKAGE
 
-`sudo add-apt-repository ppa:user3514/screen-generator && sudo apt-get update
+`sudo add-apt-repository ppa:user3514/screen-generator && sudo apt-get update`
 sudo apt-get install screen-generator`
 
 

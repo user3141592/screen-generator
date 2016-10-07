@@ -36,7 +36,7 @@ see also `./examples/*`
 
 # Bugs
 
-Please report any bug at jean.yvan.tissot[at]gmail.com.
+Please report any bug at `jean.yvan.tissot[at]gmail.com`
 
 
 # Version

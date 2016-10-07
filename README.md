@@ -20,7 +20,7 @@ To have a brief insight of what it can do, run
 `$ cd screen-generator`
 `$ sudo cp ./screen-generator.1.gz /usr/local/man/man1/  `
 
-## 2) PPA package (Only available from version v0.4)
+## 2) PPA package (only available from version v0.4)
 
 `sudo add-apt-repository ppa:user3514/screen-generator && sudo apt-get update`
 sudo apt-get install screen-generator`

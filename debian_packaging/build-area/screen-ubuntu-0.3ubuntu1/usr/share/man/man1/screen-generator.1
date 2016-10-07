@@ -1,0 +1,120 @@
+.\" Manpage for screen-generator
+.TH SCREEN-GENERATOR 1 "2016-07-31" "1.0" "screen-generator v0.3.1"
+.SH NAME
+
+screen-generator \- generates screen configuration files and launches screen by providing a chain of commands
+.SH SYNOPSIS
+
+.B "screen-generator [-c <COMMAND CHAIN>] [-x <X>] [-y <Y>] [-d <DESTINATION PATH>] [-n] [-v]"
+.SH DESCRIPTION
+.B Screen-generator
+generates screen configuration files by only providing window commands. screen-generator automatically find the number of windows needed given the command chains.
+
+The number of windows can also be specifed in alone or in conjunction with a command chain. It can for instance generate any screenrc defining a grid of 
+.B <X>
+lines and 
+.B <Y>
+columns.
+
+Window commands can be chose by using 
+.B -c 
+flag with a set of commands separated by commas (e.g "bash;watch ls;watch lsblk;tcpdum") or by newlines. 
+
+If no command chain is given, window commands become the default shell $SHELL.
+  
+The path of the new screen configuration file can be specified using 
+.B -d <DESTINATION PATH>
+\.
+If the flag 
+.B -d
+is not set, the location becomes 
+.B /tmp/screenrc-<X>x<Y>
+
+The Nth command in the chain gives the command of the Nth window counting from top lef to bottom right.
+
+The number of windows is automatically guessed depending on the command chain but can also be set using 
+.B -x
+and 
+.B -y
+flags.
+
+If no command chain nor screen size is given, default values of 1 and 2 are taken (given by variables 
+.B DEFAULT_NUMBER_OF_LINES
+and
+.B DEFAULT_NUMBER_OF_COLUMNS. 
+
+Screen can be prevented from being lauched by adding the option 
+.B -n
+\.
+The option 
+.B -t allow to print the newly generated screen on the terminal.
+.SH OPTIONS
+
+.TP
+.B -c <COMMAND CHAIN>
+Specify window command from a set of commands <COMMAND CHAIN> separated by commas (e.g "bash;watch ls;watch lsblk") or by a newlines. 
+.TP
+.B -x <X> 
+Specify the number of lines. This will overwrite the value guessed if command chain is given.
+.TP
+.B -y <Y>
+Specify the number of columns. This will overwrite the value guessed if command chain is given.
+.TP
+.B -d <DESTINATION PATH> 
+Specify the destination of the generated configuration file (
+.B /tmp/.screenrc-<X>x<Y>-<ADJUSTED COMMAND CHAIN STRING>
+if not mentioned )
+.TP
+.B -n
+Prevent from executing screen. It only generate screen configuration file ( given by <DESTINATION PATH> or /tmp/.screenrc-<X>x<Y> )
+.TP
+.B -o <OPTION CHAIN>
+Add lines to the screen configuration file. <OPTION CHAIN> is a chain in the format "<OPTION_1>;...;<OPTION_N>". 
+.T
+.B -t
+Print the newly generated screen configuration file on terminal and prevent screen from running.
+.TP
+.B -h, --help
+Display help
+.TP
+.B -v
+Activate debug mode. 
+
+.SH EXAMPLES
+
+
+1) screen-generator -c "watch ls /tmp;lsblk;tcpdump"   
+ 
+   Open a new screen composed of a grid of 2 lines and 2 colums
+
+2) screen-generator -n -x 5 -y 3 -d $HOME/.screenrc
+
+   Replace the default configuration file of screen by a newly generated one decribing a 5x3 grid with $SHELL as window command.
+
+.SH FILES
+
+
+/tmp/screenrc-<X>x<Y>[-<COMMAND-CHAIN>]
+
+.SH VARIABLES
+
+
+.B DEFAULT_NUMBER_OF_COLUMNS
+in /usr/bin/screen-generator     
+
+.B DEFAULT_NUMBER_OF_LINES
+in /usr/bin/screen-generator     
+
+.B DEFAULT_SHORTCUTS 
+in /usr/bin/screen-generator
+
+.B DEFAULT_OPTIONS
+in /usr/bin/screen-generator
+
+.SH AUTHOR
+
+Any bug, suggestions, or remarks are welcome at jean.yvan.tissot[at]gmail.com
+
+.SH VERSION
+
+screen-generator v0.3.1

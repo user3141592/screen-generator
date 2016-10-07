@@ -1,0 +1,12 @@
+screen-generator (0.3-1) UNRELEASED; urgency=medium
+
+  * First release 
+
+ -- root <root@computer>  Wed, 05 Oct 2016 14:07:36 +0200
+
+package (version) distribution; urgency=urgency
+
+* Add automatic command substitutions
+  - ls -> watch ls
+  - cat -> less
+-- maintainer name <jean.yvan.tissot@gmail.com>  Wed, 05 Oct 2016 00:06:08 +0200

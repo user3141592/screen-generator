@@ -1,0 +1,9 @@
+Package: screen-generator
+Version: 0.3-1
+Section: base
+Priority: optional
+Architecture: any
+Maintainer: Jean Yvan Tissot  <jean.yvan.tissot@gmail.com>
+Description: 
+ screen-generator generates screen configuration files and launches screen by simply
+ providing a chain of commands

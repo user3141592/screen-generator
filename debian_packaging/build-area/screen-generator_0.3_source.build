@@ -1,0 +1,9 @@
+ dpkg-buildpackage -rfakeroot -d -us -uc -S -sa
+dpkg-buildpackage: warning: using a gain-root-command while being root
+dpkg-buildpackage: source package screen-generator
+dpkg-buildpackage: source version 0.3
+dpkg-buildpackage: source distribution UNRELEASED
+dpkg-buildpackage: source changed by root <root@computer>
+ dpkg-source --before-build screen-generator-0.3
+dpkg-source: error: syntax error in screen-generator-0.3/debian/control at line 9: first block lacks a Source field
+dpkg-buildpackage: error: dpkg-source --before-build screen-generator-0.3 gave error exit status 255

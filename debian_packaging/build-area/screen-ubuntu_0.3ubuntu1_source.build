@@ -1,0 +1,9 @@
+ dpkg-buildpackage -rfakeroot -d -us -uc -S -sa
+dpkg-buildpackage: warning: using a gain-root-command while being root
+dpkg-buildpackage: source package screen-ubuntu
+dpkg-buildpackage: source version 0.3ubuntu1
+dpkg-buildpackage: source distribution UNRELEASED
+dpkg-buildpackage: source changed by root <root@computer>
+ dpkg-source --before-build screen-ubuntu-0.3ubuntu1
+dpkg-source: error: syntax error in screen-ubuntu-0.3ubuntu1/debian/control at line 9: first block lacks a Source field
+dpkg-buildpackage: error: dpkg-source --before-build screen-ubuntu-0.3ubuntu1 gave error exit status 255

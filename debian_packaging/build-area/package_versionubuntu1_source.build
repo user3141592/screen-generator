@@ -1,0 +1,7 @@
+ dpkg-buildpackage -rfakeroot -d -us -uc -S -sa
+dpkg-buildpackage: warning: using a gain-root-command while being root
+dpkg-buildpackage: warning:     debian/changelog(l1): version 'versionubuntu1' is invalid: version number does not start with digit
+LINE: package (versionubuntu1) UNRELEASED; urgency=medium
+dpkg-buildpackage: error: version number does not start with digit
+dpkg-buildpackage: source package package
+dpkg-buildpackage: source version versionubuntu1

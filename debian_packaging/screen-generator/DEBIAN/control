@@ -1,0 +1,13 @@
+Source: screen-generator
+Package: screen-generator
+Version: 0.3
+Standard-Version: 0.3
+Section: base
+Maintainer: jean.yvan.tissot@gmail.com <jean.yvan.tissot@gmail.com>
+XSBC-Original-Maintainer: Jean Yvan <jean.yvan.tissot@gmail.com>
+Priority: optional
+Architecture: any
+Vcs-Bzr: lp:ubuntu/screen-generator
+Homepage: https://github.com/boddhissattva/screen-generator
+Description: 
+ screen-generator generates screen configuration files and launches screen by providing a chain of commands

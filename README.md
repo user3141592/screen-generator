@@ -2,9 +2,9 @@
 
 screen-generator generates screen configuration files and launches screen by providing a chain of commands or a windows configuration
 
-# How can i have a brief insight of what screenr-_generator does?
+To have a brief insight of what it can do, run
 
-`./screen-generator -c "watch -c 'ps -e -o cmd | tac';watch df ;tcpdump;top"`
+`$ ./screen-generator -c "watch -c 'ps -e -o cmd | tac';watch df ;tcpdump;top"`
 
 # Setup
 

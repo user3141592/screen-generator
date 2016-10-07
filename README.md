@@ -10,20 +10,21 @@ To have a brief insight of what it can do, run
 
 ## 1) Debian package
 
-`$ dpkg -i screen-generator.deb`
+* `$ dpkg -i screen-generator.deb`
 
 ## 2) Manually
 
-`$ sudo apt-get install -y screen`
-`$ sudo git clone https://github.com/boddhissattva/screen-generator `
-`$ sudo chmod -R u+rx screen-generator `
-`$ cd screen-generator`
-`$ sudo cp ./screen-generator.1.gz /usr/local/man/man1/  `
+* `$ sudo apt-get install -y screen`
+* `$ sudo git clone https://github.com/boddhissattva/screen-generator`
+* `$ sudo chmod -R u+rx screen-generator `
+* `$ cd screen-generator`
+* `$ sudo cp ./screen-generator.1.gz /usr/local/man/man1/  `
 
 ## 2) PPA package (only available from version v0.4)
 
-`sudo add-apt-repository ppa:user3514/screen-generator && sudo apt-get update`
-sudo apt-get install screen-generator`
+* `sudo add-apt-repository ppa:user3514/screen-generator`
+* sudo apt-get update`
+* sudo apt-get install screen-generator`
 
 
 # Documentation

@@ -4,11 +4,11 @@
 
 # SETUP
 
-## DEBIAN PACKAGE
+## 1) DEBIAN PACKAGE
 
 $ dpkg -i screen-generator.deb
 
-## MANUALLY
+## 2) MANUALLY
 
 $ sudo apt-get install -y screen
 $ sudo git clone https://github.com/boddhissattva/screen-generator 
@@ -18,7 +18,7 @@ $ sudo cp ./screen-generator.1.gz /usr/local/man/man1/
 
 ------------ AVAILABLE ONLY FROM VERSION v0.4 -----------
 
-## PPA PACKAGE
+## 2) PPA PACKAGE
 
 sudo add-apt-repository ppa:user3514/screen-generator && sudo apt-get update
 sudo apt-get install screen-generator

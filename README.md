@@ -10,10 +10,10 @@
 
 ## 2) MANUALLY
 
-`$ sudo apt-get install -y screen
-$ sudo git clone https://github.com/boddhissattva/screen-generator 
-$ sudo chmod -R u+rx screen-generator 
-$ cd screen-generator
+`$ sudo apt-get install -y screen`
+$ sudo git clone https://github.com/boddhissattva/screen-generator `
+$ sudo chmod -R u+rx screen-generator `
+$ cd screen-generator`
 $ sudo cp ./screen-generator.1.gz /usr/local/man/man1/  `
 
 ------------ AVAILABLE ONLY FROM VERSION v0.4 -----------

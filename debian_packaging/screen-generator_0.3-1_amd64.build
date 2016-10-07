@@ -4,11 +4,11 @@ dpkg-buildpackage: source package screen-generator
 dpkg-buildpackage: source version 0.3-1
 dpkg-buildpackage: source distribution UNRELEASED
 dpkg-buildpackage: source changed by root <root@computer>
- dpkg-source --before-build screen-generator-0.3-1
+ dpkg-source --before-build screen-generator
 dpkg-buildpackage: host architecture amd64
 dpkg-source: warning: unknown information field 'Package' in input data in general section of control info file
+dpkg-source: warning: unknown information field 'Version' in input data in general section of control info file
 dpkg-source: warning: unknown information field 'Architecture' in input data in general section of control info file
-dpkg-source: warning: unknown information field 'Depends' in input data in general section of control info file
 dpkg-source: warning: unknown information field 'Description' in input data in general section of control info file
-dpkg-source: error: screen-generator-0.3-1/debian/control doesn't list any binary package
-dpkg-buildpackage: error: dpkg-source --before-build screen-generator-0.3-1 gave error exit status 255
+dpkg-source: error: screen-generator/debian/control doesn't list any binary package
+dpkg-buildpackage: error: dpkg-source --before-build screen-generator gave error exit status 255

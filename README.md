@@ -1,6 +1,6 @@
 # What is screen-generator?
 
-`screen-generator` generates screen configuration files and launches screen by providing a chain of commands or a windows configuration
+`screen-generator` generates screen configuration files and launches screen by providing chains of commands or window configurations
 
 To have a brief insight of what it can do, run
 

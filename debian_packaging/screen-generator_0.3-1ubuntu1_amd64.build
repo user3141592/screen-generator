@@ -3,12 +3,71 @@ dpkg-buildpackage: warning: using a gain-root-command while being root
 dpkg-buildpackage: source package screen-generator
 dpkg-buildpackage: source version 0.3-1ubuntu1
 dpkg-buildpackage: source distribution UNRELEASED
-dpkg-buildpackage: source changed by root <root@computer>
- dpkg-source --before-build screen-generator-0.3-1
+dpkg-buildpackage: source changed by Jean <jean.yvan.tissot@gmail.com>
+ dpkg-source --before-build screen-generator_0.3-1
 dpkg-buildpackage: host architecture amd64
-dpkg-source: warning: unknown information field 'Package' in input data in general section of control info file
-dpkg-source: warning: unknown information field 'Standard-Version' in input data in general section of control info file
-dpkg-source: warning: unknown information field 'Architecture' in input data in general section of control info file
-dpkg-source: warning: unknown information field 'Description' in input data in general section of control info file
-dpkg-source: error: screen-generator-0.3-1/debian/control doesn't list any binary package
-dpkg-buildpackage: error: dpkg-source --before-build screen-generator-0.3-1 gave error exit status 255
+dpkg-source: warning: unknown information field 'Maintainer' in input data in package's section of control info file
+ fakeroot debian/rules clean
+dh clean 
+   dh_testdir
+   dh_auto_clean
+   dh_clean
+ dpkg-source -b screen-generator_0.3-1
+dpkg-source: warning: unknown information field 'Maintainer' in input data in package's section of control info file
+dpkg-source: warning: no source format specified in debian/source/format, see dpkg-source(1)
+dpkg-source: warning: Version number suggests Ubuntu changes, but Maintainer: does not have Ubuntu address
+dpkg-source: warning: source directory 'screen-generator_0.3-1' is not <sourcepackage>-<upstreamversion> 'screen-generator-0.3'
+dpkg-source: warning: .orig directory name screen-generator_0.3-1.orig is not <package>-<upstreamversion> (wanted screen-generator-0.3.orig)
+dpkg-source: info: using source format '1.0'
+dpkg-source: info: building screen-generator using existing screen-generator_0.3.orig.tar.gz
+dpkg-source: info: building screen-generator in screen-generator_0.3-1ubuntu1.diff.gz
+dpkg-source: warning: ignoring deletion of file CREATE_DEBIAN_PACKAGE.sh, use --include-removal to override
+dpkg-source: error: cannot represent change to .bzr/checkout/dirstate: binary file contents changed
+dpkg-source: warning: file screen-generator_0.3-1/.bzr/repository/indices/67e2216b7b132615b2c6cca87d743845.cix has no final newline (either original or modified version)
+dpkg-source: warning: file screen-generator_0.3-1/.bzr/repository/indices/67e2216b7b132615b2c6cca87d743845.iix has no final newline (either original or modified version)
+dpkg-source: error: cannot represent change to .bzr/repository/indices/67e2216b7b132615b2c6cca87d743845.rix: binary file contents changed
+dpkg-source: error: cannot represent change to .bzr/repository/indices/67e2216b7b132615b2c6cca87d743845.tix: binary file contents changed
+dpkg-source: error: cannot represent change to .bzr/repository/indices/6d621b54b50a09a7afb2cf7f439ba3b7.cix: binary file contents changed
+dpkg-source: error: cannot represent change to .bzr/repository/indices/6d621b54b50a09a7afb2cf7f439ba3b7.iix: binary file contents changed
+dpkg-source: error: cannot represent change to .bzr/repository/indices/6d621b54b50a09a7afb2cf7f439ba3b7.rix: binary file contents changed
+dpkg-source: warning: executable mode 0775 of '.bzr/repository/indices/6d621b54b50a09a7afb2cf7f439ba3b7.six' will not be represented in diff
+dpkg-source: error: cannot represent change to .bzr/repository/indices/6d621b54b50a09a7afb2cf7f439ba3b7.tix: binary file contents changed
+dpkg-source: warning: file screen-generator_0.3-1/.bzr/repository/indices/b606526485d225c22084ea2ba23f3ceb.cix has no final newline (either original or modified version)
+dpkg-source: warning: file screen-generator_0.3-1/.bzr/repository/indices/b606526485d225c22084ea2ba23f3ceb.iix has no final newline (either original or modified version)
+dpkg-source: warning: file screen-generator_0.3-1/.bzr/repository/indices/b606526485d225c22084ea2ba23f3ceb.rix has no final newline (either original or modified version)
+dpkg-source: warning: file screen-generator_0.3-1/.bzr/repository/indices/b606526485d225c22084ea2ba23f3ceb.tix has no final newline (either original or modified version)
+dpkg-source: warning: file screen-generator_0.3-1/.bzr/repository/pack-names has no final newline (either original or modified version)
+dpkg-source: error: cannot represent change to .bzr/repository/packs/67e2216b7b132615b2c6cca87d743845.pack: binary file contents changed
+dpkg-source: error: cannot represent change to .bzr/repository/packs/6d621b54b50a09a7afb2cf7f439ba3b7.pack: binary file contents changed
+dpkg-source: error: cannot represent change to .bzr/repository/packs/b606526485d225c22084ea2ba23f3ceb.pack: binary file contents changed
+dpkg-source: warning: executable mode 0775 of 'DEBIAN/changelog' will not be represented in diff
+dpkg-source: warning: executable mode 0775 of 'DEBIAN/compat' will not be represented in diff
+dpkg-source: warning: executable mode 0775 of 'DEBIAN/control' will not be represented in diff
+dpkg-source: warning: executable mode 0775 of 'DEBIAN/copyright' will not be represented in diff
+dpkg-source: warning: executable mode 0775 of 'DEBIAN/debhelper-build-stamp' will not be represented in diff
+dpkg-source: warning: newly created empty file 'DEBIAN/install' will not be represented in diff
+dpkg-source: warning: executable mode 0775 of 'DEBIAN/rules' will not be represented in diff
+dpkg-source: warning: executable mode 0755 of 'debian/compat' will not be represented in diff
+dpkg-source: error: cannot represent change to screen-generator_0.3-1.tar: binary file contents changed
+dpkg-source: warning: the diff modifies the following upstream files: 
+ .bzr/branch/branch.conf
+ .bzr/branch/last-revision
+ .bzr/repository/indices/67e2216b7b132615b2c6cca87d743845.cix
+ .bzr/repository/indices/67e2216b7b132615b2c6cca87d743845.iix
+ .bzr/repository/indices/67e2216b7b132615b2c6cca87d743845.six
+ .bzr/repository/indices/6d621b54b50a09a7afb2cf7f439ba3b7.six
+ .bzr/repository/indices/b606526485d225c22084ea2ba23f3ceb.cix
+ .bzr/repository/indices/b606526485d225c22084ea2ba23f3ceb.iix
+ .bzr/repository/indices/b606526485d225c22084ea2ba23f3ceb.rix
+ .bzr/repository/indices/b606526485d225c22084ea2ba23f3ceb.six
+ .bzr/repository/indices/b606526485d225c22084ea2ba23f3ceb.tix
+ .bzr/repository/pack-names
+ DEBIAN/changelog
+ DEBIAN/compat
+ DEBIAN/control
+ DEBIAN/copyright
+ DEBIAN/debhelper-build-stamp
+ DEBIAN/rules
+dpkg-source: info: use the '3.0 (quilt)' format to have separate and documented changes to upstream files, see dpkg-source(1)
+dpkg-source: error: unrepresentable changes to source
+dpkg-buildpackage: error: dpkg-source -b screen-generator_0.3-1 gave error exit status 1

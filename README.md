@@ -28,9 +28,11 @@ sudo apt-get install screen-generator`
 
 # Documentation
 
-`man screen-genrator` or `screen-generator -l screen-generator.1` if not installed
+* `man screen-genrator` or `man -l screen-generator.1` if not installed
 
-see also `./examples/*`
+* `./screen-generator --help
+
+* `./examples/*`
 
 # Bugs
 

@@ -1,0 +1,6 @@
+Source: screen-generator
+Standards-Version: 0.3
+XSBC-Original-Maintainer: Jean Yvan <jean.yvan.tissot@gmail.com>
+Priority: optional
+Homepage: https://github.com/boddhissattva/screen-generator
+Vcs-Git: https://github.com/boddhissattva/screen-generator

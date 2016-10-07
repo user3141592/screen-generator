@@ -1,0 +1,16 @@
+screen-generator (0.3-1ubuntu1) UNRELEASED; urgency=medium
+
+  [ root ]
+  * First release 
+
+  [ Jean ]
+  * 
+
+ -- Jean <jean.yvan.tissot@gmail.com>  Fri, 07 Oct 2016 18:28:37 +0200
+
+package (version) distribution; urgency=urgency
+
+* Add automatic command substitutions
+  - ls -> watch ls
+  - cat -> less
+-- maintainer name <jean.yvan.tissot@gmail.com>  Wed, 05 Oct 2016 00:06:08 +0200

@@ -23,8 +23,8 @@ To have a brief insight of what it can do, run
 ## 2) PPA package (only available from version v0.4)
 
 * `sudo add-apt-repository ppa:user3514/screen-generator`
-* sudo apt-get update`
-* sudo apt-get install screen-generator`
+* `sudo apt-get update`
+* `sudo apt-get install screen-generator`
 
 
 # Documentation

@@ -15,10 +15,10 @@ To have a brief insight of what it can do, run
 ## 2) Manually
 
 `$ sudo apt-get install -y screen`
-$ sudo git clone https://github.com/boddhissattva/screen-generator `
-$ sudo chmod -R u+rx screen-generator `
-$ cd screen-generator`
-$ sudo cp ./screen-generator.1.gz /usr/local/man/man1/  `
+`$ sudo git clone https://github.com/boddhissattva/screen-generator `
+`$ sudo chmod -R u+rx screen-generator `
+`$ cd screen-generator`
+`$ sudo cp ./screen-generator.1.gz /usr/local/man/man1/  `
 
 ## 2) PPA package (Only available from version v0.4)
 

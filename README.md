@@ -6,7 +6,7 @@
 
 ## 1) DEBIAN PACKAGE
 
-$ dpkg -i screen-generator.deb
+$ `dpkg -i screen-generator.deb`
 
 ## 2) MANUALLY
 

@@ -24,6 +24,7 @@ will open a screen with as much windows as the number of file matching `*.torren
 * `$ sudo git clone https://github.com/boddhissattva/screen-generator`
 * `$ sudo chmod -R u+rx screen-generator `
 * `$ cd screen-generator`
+* `$ sudo cp ./screen-generator /usr/bin`
 * `$ sudo cp ./screen-generator.1.gz /usr/local/man/man1/  `
 
 ## 2) PPA package (only available from version v0.4)

@@ -8,9 +8,10 @@ To have a brief insight of what it can do, run
 
 Moreover, the command
 
-`$ ./screen-generator -c "watch cat file+"`
+`$ ./screen-generator -c "transmission-cli +.torrent"`
 
-will open a screen with as much windows as the number of file matching file* with the command `watch cat`. The `+` sign ask `screen-generator` to expand the command in a command chain.
+will open a screen with as much windows as the number of file matching `*.torrent` with the command `transmission-cli`. The plus sign asks `screen-generator` to expand the command in a command chain.
+
 # Setup
 
 ## 1) Debian package

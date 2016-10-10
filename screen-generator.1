@@ -65,6 +65,12 @@ Specify the destination of the generated configuration file (
 .B /tmp/.screenrc-XxY-ADJUSTED COMMAND CHAIN STRING
 if not mentioned )
 .TP
+.B -m WINDOW NUMBER 
+Move the cursor to 
+.BR WINDOW
+.BR NUMBER .
+Windows are numbered from top-left to bottom right, line by lines. The cursor is set to the first added shell if not specifies
+.TP
 .B -n
 Prevent from executing screen. It only generate screen configuration file ( given by DESTINATION PATH or /tmp/.screenrc-XxY )
 .TP

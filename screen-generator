@@ -143,6 +143,7 @@ then
 -x X                        Specify the number of lines. This will overwrite the value guessed if command chain is given.
 -y Y                        Specify the number of columns. This will overwrite the value guessed if command chain is given.
 -d DESTINATION PATH         Specify the destination of the generated configuration file (/tmp/.screenrc-XxY-[COMMAND CHAIN] if not mentioned )
+-m WINDOW NUMBER            Move the cursor to WINDOW NUMBER. Windows are numbered from top-left to bottom right, line by lines. The cursor is set to the first added shell if not specifies
 -n                          Prevent from executing screen. It only generate screen configuration file ( given by DESTINATION PATH or /tmp/.screenrc-XxY )
 -o OPTION CHAIN             Add lines to the screen configuration file. OPTION CHAIN is a chain in the format "OPTION_1;...;OPTION_N". 
 -t                          Print the newly generated screen configuration file on terminal and prevent screen from running.

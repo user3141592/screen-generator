@@ -71,6 +71,7 @@ COMMAND_CHAIN=""
 SCREEN_CONFIGURATION_FILE_GIVEN=""
 NUMBER_OF_LINES_GIVEN=""
 NUMBER_OF_COLUMNS_GIVEN=""
+CURSOR_WINDOW_NUMBER_GIVEN=""
 NUMBER_OF_COMMANDS=0
 
 while [ $# -ge 1 ]
@@ -80,7 +81,8 @@ key="$1"
 case $key in
 
 -c)
-COMMAND_CHAIN="$2"
+A=$2
+COMMAND_CHAIN="${A//\*/+}"
 shift # past argument
 ;;
 -d)
@@ -109,6 +111,10 @@ CHECK_t=1
 ;;
 -v)
 CHECK_v=1
+;;
+-m)
+CURSOR_WINDOW_NUMBER_GIVEN=$2
+shift
 ;;
  # past argument
 -h|--help)
@@ -144,6 +150,38 @@ then
 -v                          Activate debug mode.\n'
 
  else
+COMMAND_CHAIN_UNEXPANDED=$COMMAND_CHAIN
+if ! [ -z "$(echo $COMMAND_CHAIN | grep '+' )" ]
+then
+echo-debug "Expanding the command chain"
+DETECTED_PATTERNS="$(echo $COMMAND_CHAIN | grep -o "[^;,^ ]*+[^;,^ ]*" | sed 's/ //g')"
+echo-debug "DETECTED_PATTERNS=$DETECTED_PATTERNS"
+echo-debug "Number of detected patterns: "$( echo $DETECTED_PATTERNS|wc -w)
+
+for PATTERN in $DETECTED_PATTERNS
+do
+echo-debug "PATTERN=$PATTERN"
+COMMAND_WITH_PATTERN="$(echo $COMMAND_CHAIN | grep -o "[^;]*$PATTERN[^;]*" )"
+echo-debug -e "COMMAND_WITH_PATTERN=$COMMAND_WITH_PATTERN"
+PREFIX=$(echo $COMMAND_WITH_PATTERN | sed "s/\(.*\)[ ]*$PATTERN[ ]*\(.*\)/\1/")
+echo-debug PREFIX=$PREFIX
+SUFFIX=$(echo $COMMAND_WITH_PATTERN | sed "s/\([^ ].*\)[ ]*$PATTERN[ ]*\([^ ]*\)/\2/")
+echo-debug SUFFIX=$SUFFIX
+EXPANDED_COMMAND=""
+for i in $(echo $PATTERN | sed 's/+/*/')
+do
+echo-debug "Adding command \"$PREFIX$i$SUFFIX\" linked to file \"$(echo $i| sed 's/^[ ]*//;s/[ ]*$//;s/ /\\\ /g')\""
+EXPANDED_COMMAND="$EXPANDED_COMMAND ; $PREFIX $(echo $i| sed 's/^[ ]*//;s/[ ]*$//;s/ /\\\ /g') $SUFFIX"
+echo-debug "EXPANDED_COMMAND after adding $i: "$EXPANDED_COMMAND
+done
+EXPANDED_COMMAND=${EXPANDED_COMMAND/;/}
+echo-debug "EXPANDED_COMMAND_WITHOUT_COLON=$EXPANDED_COMMAND"
+echo-debug " "
+echo-debug EXPANDED_COMMAND=$EXPANDED_COMMAND
+COMMAND_CHAIN=${COMMAND_CHAIN/$COMMAND_WITH_PATTERN/$EXPANDED_COMMAND}
+echo-debug EXPANDED_COMMAND_CHAIN=$COMMAND_CHAIN
+done
+fi
 
 
 # GUESS THE NUMBER OF LINES AND COLUMNS IF -c is SET
@@ -216,7 +254,7 @@ echo-debug "Choosing short name for SCREEN_CONFIGURATION_FILE"
 SCREEN_CONFIGURATION_FILE=${SCREEN_CONFIGURATION_FILE_GIVEN:-/tmp/screenrc-${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}}
 else
 echo-debug "Choosing long name for SCREEN_CONFIGURATION_FILE"
-SCREEN_CONFIGURATION_FILE=${SCREEN_CONFIGURATION_FILE_GIVEN:-/tmp/screenrc-${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}-$(echo "$COMMAND_CHAIN"|sed 's/;$//;s/\;/_/g;s/ /-/g;s#/#-#g;s/--/-/g'|sed "s/'//g"|sed -r 's/[|]/_/g' )}  # FILNAME OF MORE THAN 256 CHARACTERS ARE NOT ALLOWED
+SCREEN_CONFIGURATION_FILE=${SCREEN_CONFIGURATION_FILE_GIVEN:-/tmp/screenrc-${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}-$(echo "$COMMAND_CHAIN_UNEXPANDED"|sed 's/;$//;s/\;/_/g;s/ /-/g;s#/#-#g;s/--/-/g'|sed "s/'//g"|sed -r 's/[|]/_/g' )}  # FILNAME OF MORE THAN 256 CHARACTERS ARE NOT ALLOWED
     fi
 echo-debug "SCREEN_CONFIGURATION_FILE=$SCREEN_CONFIGURATION_FILE"
 SCREEN_CONFIGURATION_FILE=$(echo $SCREEN_CONFIGURATION_FILE | colrm 255)
@@ -235,15 +273,16 @@ if ! [ -z $OPTION_CHAIN ]
 echo "$OPTION_CHAIN"| sed 's/;$[ ]*//;s/\;/\n/g' >> $SCREEN_CONFIGURATION_FILE
     fi
 
-# ADDING COMMANDS FROM THE COMMAND CHAIN
+# ADDING COMMANDS TO THE CONFIGURATION FILE FROM THE COMMAND CHAIN
 
 LINE_NUMBER=0
 if ! [  "$NUMBER_OF_COMMANDS" -eq "0" ]
     then
 echo-debug "Assume NUMBER_OF_COMMANDS is not 0"
-echo "$COMMAND_CHAIN"| sed -e 's/;$//;s/\;/\n/g' -|sed 's/[ ]*cat /less /'|sed  "s/^[ ]*ls /watch ls /"|sed 's/^/screen /' | nl | awk ' { t = $1; $1 = $2; $2 = t; print; }'  >> $SCREEN_CONFIGURATION_FILE
+echo "$COMMAND_CHAIN"| sed -e 's/;$//;s/\;/\n/g' -|sed 's/^cat /less /'|sed  "s/^ls /watch ls /"|sed 's/^/screen /' | nl | awk ' { t = $1; $1 = $2; $2 = t; print; }'  >> $SCREEN_CONFIGURATION_FILE
 else
-    echo-debug "Assume NUMBER_OF_COMMANDS is 0"
+echo-debug "Assume NUMBER_OF_COMMANDS is 0"
+
 fi
 
 echo-word-middle-debug "Generate the screenrc"
@@ -292,7 +331,7 @@ echo "split" >> $SCREEN_CONFIGURATION_FILE
 echo "focus down" >> $SCREEN_CONFIGURATION_FILE
 
 # FIRST COLUMN, LINE $k
-echo-debug "First column"
+
 echo-debug "select $(($NUMBER_OF_COLUMNS*$k+1))" 
 echo "select $(($NUMBER_OF_COLUMNS*$k+1))" >> $SCREEN_CONFIGURATION_FILE
 
@@ -300,19 +339,19 @@ echo "select $(($NUMBER_OF_COLUMNS*$k+1))" >> $SCREEN_CONFIGURATION_FILE
 
 # LOOP OVER COLUMNS
 
-echo-debug "for j in $(seq $(($NUMBER_OF_COLUMNS-1)))"
+
 for j in $(seq $(($NUMBER_OF_COLUMNS-1)))
 do
 echo "focus right" >> $SCREEN_CONFIGURATION_FILE
 echo "split" >> $SCREEN_CONFIGURATION_FILE
 echo "focus down" >> $SCREEN_CONFIGURATION_FILE
-echo-debug "select $(($NUMBER_OF_COLUMNS*$k+$j+1))"
+
 echo "select $(($NUMBER_OF_COLUMNS*$k+$j+1))" >> $SCREEN_CONFIGURATION_FILE
 done
 
 # MOVE THE CURSOR TO THE LEFT
 
-echo-debug "for l in $(seq $(($NUMBER_OF_COLUMNS-1)))"
+
 for l in $(seq $(($NUMBER_OF_COLUMNS-1)))
 do
 echo "focus left" >> $SCREEN_CONFIGURATION_FILE
@@ -321,14 +360,38 @@ done
 
 # MOVE THE CURSOR TO THE TOP LEFT WINDOW
 
-echo-debug "for i in $(seq $(($NUMBER_OF_LINES-1)) )"
+
 for i in $(seq $(($NUMBER_OF_LINES-1)) )
 do
 echo "focus up" >> $SCREEN_CONFIGURATION_FILE
 done
 
-#INCLUDE SHORTCUTS IN THE CONFIGURATION FILE
+#MOVE CURSOR TO THE FIRST SHELL OR THE WINDOW NUMBER SPECIFIED BY THE USER
 
+if [ $NUMBER_OF_COMMANDS_GIVEN -eq $(($NUMBER_OF_COLUMNS*$NUMBER_OF_LINES)) ] # CHANGE_0.4
+then
+CURSOR_WINDOW_NUMBER=1
+else
+CURSOR_WINDOW_NUMBER=${CURSOR_WINDOW_NUMBER_GIVEN:- $(($NUMBER_OF_COMMANDS_GIVEN + 1 )) }
+fi
+echo-debug "CURSOR_WINDOW_NUMBER=$CURSOR_WINDOW_NUMBER"
+M_RIGHT=$(((CURSOR_WINDOW_NUMBER-1)%NUMBER_OF_COLUMNS))
+echo-debug M_RIGHT=$CURSOR_WINDOW_NUMBER-1%$NUMBER_OF_COLUMNS+1
+M_DOWN=$((( CURSOR_WINDOW_NUMBER-1 -(CURSOR_WINDOW_NUMBER-1)%NUMBER_OF_COLUMNS      )/NUMBER_OF_LINES )) 
+echo-debug Moving right $M_RIGHT times 
+for i in $(seq $M_RIGHT )
+do
+echo "focus right" >> $SCREEN_CONFIGURATION_FILE
+done
+echo-debug Moving down $M_DOWN times 
+for p in $(seq $M_DOWN)
+do
+echo "focus down" >> $SCREEN_CONFIGURATION_FILE
+done
+
+#MOVE CURSOR AT TOP LEFT IF NO SHELL
+
+#INCLUDE SHORTCUTS IN THE CONFIGURATION FILE
 
 echo $DEFAULT_OPTIONS>> $SCREEN_CONFIGURATION_FILE
 echo "$DEFAULT_SHORTCUTS">> $SCREEN_CONFIGURATION_FILE
@@ -344,7 +407,7 @@ fi
 
 # START SCREEN UNLESS OPTION -n IS SET
 
-if [ $CHECK_n -eq "0" ] && [ $CHECK_t -eq "0" ]
+if [ $CHECK_n -eq "0" ] && [ $CHECK_t -eq "0" ] && [ $CHECK_v -eq "0" ]
 then
 echo -e "\nStarting screen from $SCREEN_CONFIGURATION_FILE"
 screen -c $SCREEN_CONFIGURATION_FILE

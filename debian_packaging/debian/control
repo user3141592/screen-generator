@@ -1,0 +1,13 @@
+Source: screen-generator
+Maintainer: Jean Yvan Tissot  <jean.yvan.tissot@gmail.com>
+Priority: optional
+Standards-Version: 0.3
+Vcs-Git: https://github.com/boddhissattva/screen-generator
+
+Package: screen-generator
+Architecture: all
+Section: base
+Priority: optional
+Homepage: https://github.com/boddhissattva/screen-generator
+Description: screen-generator
+ `screen-generator` generates screen configuration files and launches screen by providing chains of commands or window configurations

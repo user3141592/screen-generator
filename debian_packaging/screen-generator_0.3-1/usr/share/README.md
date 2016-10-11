@@ -18,6 +18,15 @@ will open a screen with as much windows as the number of file matching `*.torren
 
 * `$ dpkg -i screen-generator.deb`
 
+## 2) Manually
+
+* `$ sudo apt-get install -y screen`
+* `$ sudo git clone https://github.com/boddhissattva/screen-generator`
+* `$ sudo chmod -R u+rx screen-generator `
+* `$ cd screen-generator`
+* `$ sudo cp ./screen-generator /usr/bin`
+* `$ sudo cp ./screen-generator.1.gz /usr/local/man/man1/  `
+
 ## 2) PPA package (only available from version v0.4)
 
 * `sudo add-apt-repository ppa:user3514/screen-generator`
@@ -27,11 +36,11 @@ will open a screen with as much windows as the number of file matching `*.torren
 
 # Documentation
 
-* `man screen-genrator`
+* `man screen-genrator` or `man -l screen-generator.1` if not installed
 
-* `screen-generator --help`
+* `./screen-generator --help`
 
-* `/usr/share/screen-generator/examples/*`
+* `./examples/*`
 
 # Bugs
 

@@ -1,6 +1,0 @@
-Package: screen-generator
-Section: main
-Priority: optional
-Architecture: any
-Description: 
- screen-generator generates screen configuration files and launches screen by providing a chain of commands

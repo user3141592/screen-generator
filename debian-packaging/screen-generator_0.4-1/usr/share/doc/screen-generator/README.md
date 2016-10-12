@@ -14,7 +14,7 @@ will open a screen with as much windows as the number of file matching `*.torren
 
 # Install
 
-* `$ dpkg -i screen-generator_0.4-1.deb`
+    $ dpkg -i screen-generator_0.4-1.deb
 
 # Documentation
 

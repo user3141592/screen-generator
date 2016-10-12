@@ -1,0 +1,41 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Format: 1.8
+Source: screen-generator
+Binary: screen-generator
+Architecture: source
+Version: 0.3-1
+Distribution: unstable
+Urgency: low
+Maintainer: Jean Yvan Tissot  <jean.yvan.tissot@gmail.com>
+Description:
+ screen-generator - screen-generator
+Changes:
+ screen-generator (0.3-1) unstable; urgency=low
+ .
+   - Cursor automatically moves to the first window and the user can specify
+      its initial location with the flag -m
+   - Command expansion with +
+   - PPA is published
+Checksums-Sha1:
+ e219deb190b9a82732faccfa3d86ee782772e595 1112 screen-generator_0.3-1.dsc
+ a6737f1078c12e9a54b15e6f4c02fda0aa14c913 360589 screen-generator_0.3-1.tar.gz
+Checksums-Sha256:
+ 6f42e480894764af3da89976e8cb3e6026e5a8438f69923e3f13fb727f7d7bf9 1112 screen-generator_0.3-1.dsc
+ a1a55e7a974f5cd3eb81722f7b4c6404cfe69cd8d75a88d051c5c01f8de8b18b 360589 screen-generator_0.3-1.tar.gz
+Files:
+ a2baea1f0115fae2935a26e1accea6f3 1112 - optional screen-generator_0.3-1.dsc
+ 2a466ee5f274a1e29f16f0ca6a98aa60 360589 - optional screen-generator_0.3-1.tar.gz
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQEcBAEBAgAGBQJX/LqXAAoJEGgpV7Ub3uZPJIoH+wYLHaVRn3dtU0+L6iaBGt7G
+JcA3ITfC+6BR0GzZ+ORTN51N6X9TqhCELu72dbgazGnIPIaPSAtNgREeZaSlxvoP
+pOnJJvKU+hbpPcg2w6xRo6GqP2Ig9/FBCTAjEHQFTOud3h46QasDpMtZambmEqIC
+fhp5pHkj9lGHR6Gd+yp++M/R7sTUaMF5/sDwfyCqjwEa2lV3iw1daa6dq4EffCws
+fovGzTH/dL58aASXccLW80imMKPEq4ykwMbaKuviCD8UB0exPxRkxWPg7CJJbIzr
+6JaBnYqkEdldPEWWOXZKelYHDI0L02aItQaPSVVa7hv5qr4irkSvXHm/GInu/JA=
+=ovwU
+-----END PGP SIGNATURE-----

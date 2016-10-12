@@ -6,11 +6,17 @@
 
 will launch a screen with 4 windows each with the specified command.
 
-Moreover, the command
+The command
 
     $ ./screen-generator -c "transmission-cli +.torrent"
 
 will open a screen with as much windows as the number of file matching `*.torrent` with the command `transmission-cli`. The plus sign asks `screen-generator` to expand the command in a command chain.
+
+Moreover
+
+    $ screen-generator -x 5 -y 5 
+
+will launch a screen described by a 5x5 grid.
 
 # Install
 

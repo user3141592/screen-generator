@@ -1,0 +1,9 @@
+Package: screen-generator
+Version: 0.3-1
+Section: base
+Priority: optional
+Architecture: all
+Maintainer: Jean Yvan Tissot  <jean.yvan.tissot@gmail.com>
+Description: screen-generator
+ `screen-generator` generates screen configuration files and launches screen by providing chains of commands or window configurations
+Homepage: https://github.com/boddhissattva/screen-generator 

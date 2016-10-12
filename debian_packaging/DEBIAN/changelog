@@ -1,6 +1,0 @@
-package (version) distribution; urgency=urgency
-
-* Add automatic command substitutions
-  - ls -> watch ls
-  - cat -> less
--- maintainer name <jean.yvan.tissot@gmail.com>  Tue, 11 Oct 2016 02:14:30 +0200

@@ -1,0 +1,8 @@
+screen-generator (0.4-1) unstable; urgency=low
+ 
+ * Third release
+  - Cursor is moving to the first editor or shell in the command chain
+  - remove "-c" flag in v0.5
+  - PPA is published
+
+ -- Jean Yvan <jean.yvan.tissot@gmail.com> Tue Oct 11 11:42:54 CEST 2016

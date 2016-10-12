@@ -1,0 +1,4 @@
+#!/bin/bash
+#screeeng is a shortcut for screen-generator
+
+/usr/bin/screen-generator $@

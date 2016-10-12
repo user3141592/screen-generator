@@ -1,0 +1,32 @@
+
+screen
+split
+focus down
+screen
+split
+focus down
+screen
+split
+focus down
+screen
+split
+focus down
+screen
+split
+focus down
+screen
+split
+focus down
+screen
+focus up
+focus up
+focus up
+focus up
+focus up
+focus up
+bindkey "^o" only
+bindkey "^j" focus down
+bindkey "^k" focus up
+bindkey "^l" focus right
+bindkey "^h" focus left
+startup_message off

@@ -1,0 +1,26 @@
+Format: 1.8
+Source: screen-generator
+Binary: screen-generator
+Architecture: source
+Version: 0.3-1
+Distribution: unstable
+Urgency: low
+Maintainer: Jean Yvan Tissot  <jean.yvan.tissot@gmail.com>
+Description:
+ screen-generator - screen-generator
+Changes:
+ screen-generator (0.3-1) unstable; urgency=low
+ .
+   - Cursor automatically moves to the first window and the user can specify
+      its initial location with the flag -m
+   - Command expansion with +
+   - PPA is published
+Checksums-Sha1:
+ 7a81fb92174a1c2895769f663fb63990f1f5ea93 585 screen-generator_0.3-1.dsc
+ b30463b42845e99d5674b703713ab29be5184972 9443 screen-generator_0.3-1.tar.gz
+Checksums-Sha256:
+ e06219927c659108fc4bae4674dd2da6e22a415afb3029b59b03b4e39f0dd8df 585 screen-generator_0.3-1.dsc
+ d0ba72ef8f8501cd77449e0dd60ce612edcefa82b8e2ebdb2e7da72e169f1a92 9443 screen-generator_0.3-1.tar.gz
+Files:
+ 6d662251f93835cba383379af093042d 585 - optional screen-generator_0.3-1.dsc
+ 23d84dae137c31fed53d52acbc32b232 9443 - optional screen-generator_0.3-1.tar.gz

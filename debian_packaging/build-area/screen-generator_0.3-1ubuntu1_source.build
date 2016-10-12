@@ -1,9 +1,0 @@
- dpkg-buildpackage -rfakeroot -d -us -uc -S -sa
-dpkg-buildpackage: warning: using a gain-root-command while being root
-dpkg-buildpackage: source package screen-generator
-dpkg-buildpackage: source version 0.3-1ubuntu1
-dpkg-buildpackage: source distribution UNRELEASED
-dpkg-buildpackage: source changed by Jean <jean.yvan.tissot@gmail.com>
- dpkg-source --before-build screen-generator-0.3
-dpkg-source: error: screen-generator-0.3/debian/control doesn't list any binary package
-dpkg-buildpackage: error: dpkg-source --before-build screen-generator-0.3 gave error exit status 255

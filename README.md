@@ -42,12 +42,11 @@ If the command chain is not given, `screen-generator` prompt for commands intera
 
 # Author
 
-For any suggestion, please send a mail to mailto:jean.yvan.tissot[at]gmail.com
-
+For any suggestion, please send a mail to [jean.yvan.tissot[at]gmail.com](mailto:jean.yvan.tissot[at]gmail.com)
 
 # Bugs
 
-Please report any bug at `https://github.com/boddhissattva/screen-generator/issues`
+Please report any bug at [https://github.com/boddhissattva/screen-generator/issues]
 
 # Version
 

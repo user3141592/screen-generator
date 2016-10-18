@@ -1,37 +1,26 @@
 # What is screen-generator?
 
-`screen-generator` generates screen configuration files and launches screen by providing chains of commands or window configurations
+`screen-generator` generates screen configuration files and launches screen by providing a chains of commands and/or window configurations
 
 To have a brief insight, the command
 
     $ screen-generator "cmd1;cmd2;cmd3;cmd4"
 
-print a screen configuration file with for windows, each with a different command.
+will print a screen configuration file with 4 windows, each with a different command.
 
 Moreover, the command
 
     $ screen-generator "vim +.txt"
 
-will generate a screen with as much windows as the number of file matching `*.txt` with the `vim` command
+will generate a screen with as much windows as the number of file matching `*.txt` with `vim` editor.
 
-    $ screen-generator -x 5 -y  5 -e -N
+    $ screen-generator -x 5 -y  5 -e 
 
-Launch directly a screen descibed by a 5x5 grid with shells as commands. 
-
-If the command chain is not given, `screen-generator` prompt for commands interactively.
+uses the `-e` flag which allows to directly launch a screen descibed by a `5x5` grid with shells as commands. 
 
 # Install
 
-## 1) Debian package
-
-* `$ dpkg -i screen-generator_0.5-1.deb`
-
-## 2) PPA package (only available from version v0.4)
-
-* `sudo add-apt-repository ppa:user3514/screen-generator`
-
-* `sudo apt-get update`
-* `sudo apt-get install screen-generator`
+     `$ dpkg -i screen-generator_0.5-1.deb`
 
 
 # Documentation
@@ -50,4 +39,4 @@ Please report any bug at [https://github.com/boddhissattva/screen-generator/issu
 
 # Version
 
-screen-generator `v0.5`
+`screen-generator v0.5`

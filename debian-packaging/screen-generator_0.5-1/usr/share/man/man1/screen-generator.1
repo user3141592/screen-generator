@@ -2,7 +2,7 @@
 .TH SCREEN-GENERATOR 1 "2016-07-31" "screen-generator v0.5"
 .SH NAME
 
-screen-generator, screeng \- generates screen configuration files and launches screen by providing a chain of commands or a window configuration
+screen-generator, scg \- generates screen configuration files and launches screen by providing a chain of commands or a window configuration
 .SH SYNOPSIS
 
 .B screen-generator 
@@ -24,6 +24,8 @@ screen-generator, screeng \- generates screen configuration files and launches s
 ] [\c
 .BR -m
 .I WINDOW NUMBER\c
+] [\c
+.B -i\c
 ] [\c
 .BR -o
 .I OPTIONS\c
@@ -61,21 +63,24 @@ will generate a screen with a window for each file matching *.text.
 will guess which grid is the most adequate and assigned to windows without command the default shell
 .I $SHELL.
 
-If no command chain is given, 
-.B screen-generator
-becomes interactive. The command chain is specified by entering each command, pressing <\c
-.I ENTER\c
-> and <\c
-.I CTRL+D\c
-> at the end of the command chain.
-
-The interactive mode can be prevented to appear by using flag
-.B -N 
-
 To execute screen directly, use the option
-.B -e\
-\.
+.B -e\ with 
+.B screen-generator or the command
+.B scg wich is nothing else than
+.B screen-generator
+with the
+.B -e
+flag attached.
 
+If flag 
+.B -i 
+is given and no command chain is given, 
+.B screen-generator
+becomes interactive. Commands are entered line by line by pressing <\c
+.B ENTER\c
+> and the the command chain is endend with <\c
+.B CTRL+D\c
+>
   
 Path of the new screen configuration file can be specified using 
 .B -d DESTINATION PATH
@@ -126,6 +131,9 @@ in
 and then 
 .B $SHELL
 if not specifies
+.TP
+.B -i
+Interactive mode.
 .TP
 .B -o  OPTIONS
 Add lines to the screen configuration file. OPTION CHAIN is a chain in the format "OPTION_1;...;OPTION_N". 

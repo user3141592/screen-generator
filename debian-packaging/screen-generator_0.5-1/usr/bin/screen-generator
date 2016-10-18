@@ -90,8 +90,8 @@ m[1]="-m WINDOW NUMBER"
 m[2]="Move the cursor to WINDOW NUMBER. Windows are numbered from top-left to bottom right, line by lines"
 e[1]="-e"             
 e[2]="Execute screen directly"
-N[1]="-N"             
-N[2]="Disable the interactive mode"
+i[1]="-i"             
+i[2]="Interactive mode. Commands are entered by pressing <ENTER> and the command chain is ended with <CTRL+D>"
 o[1]="-o OPTIONS"
 o[2]="Add options to the screen configuration file. OPTIONS is a chain in the format 'OPTION_1;...;OPTION_N'"
 h[1]="-h, --help"  
@@ -106,7 +106,7 @@ ${d[1]}
 ${e[1]}
 ${h[1]}
 ${m[1]}
-${N[1]}
+${i[1]}
 ${o[1]}
 ${v[1]}
 ${V[1]}
@@ -118,7 +118,7 @@ ${d[2]}
 ${e[2]}
 ${h[2]}
 ${m[2]}
-${N[2]}
+${i[2]}
 ${o[2]}
 ${v[2]}
 ${V[2]}
@@ -152,7 +152,7 @@ CHECK_d=0
 CHECK_v=0
 CHECK_e=0
 CHECK_h=0
-CHECK_N=0
+CHECK_i=0
 CHECK_V=0
 COMMAND_CHAIN=""
 SCREEN_CONFIGURATION_FILE_GIVEN=""
@@ -201,8 +201,8 @@ shift
 -h|--help)
 CHECK_h=1
 ;;
--N)
-CHECK_N=1
+-i)
+CHECK_i=1
 ;;
 -*)
 echo "$0: $1: Unrecognized option"
@@ -238,8 +238,15 @@ then
     exit
 fi
 
-# INTERACTIVE MODE
-if [ -z "$COMMAND_CHAIN" ] && [  "$CHECK_N" -eq 0 ] && [  "$CHECK_V" -eq 0 ]
+# INTERACTIVE MOD
+if [ $CHECK_i -eq 1 ] && [ ! -z $COMMAND_CHAIN ]
+then
+echo "Command chain should be null to start in interactive mode"
+exit
+fi
+
+
+if [  "$CHECK_i" -eq 1 ]
 then
 echo-debug "Initiate interactive mode"
 echo -n "Enter cmds and press CTRL+D > "

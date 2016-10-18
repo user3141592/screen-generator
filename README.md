@@ -2,21 +2,29 @@
 
 `screen-generator` generates screen configuration files and launches screen by providing chains of commands or window configurations
 
-To have a brief insight of what it can do, run
+To have a brief insight, the command
 
-`$ ./screen-generator -c "watch -c 'ps -e -o cmd | tac';watch df ;tcpdump;top"`
+    $ screen-generator "cmd1;cmd2;cmd3;cmd4"
+
+print a screen configuration file with for windows, each with a different command.
 
 Moreover, the command
 
-`$ ./screen-generator -c "transmission-cli +.torrent"`
+    $ screen-generator "vim +.txt"
 
-will open a screen with as much windows as the number of file matching `*.torrent` with the command `transmission-cli`. The plus sign asks `screen-generator` to expand the command in a command chain.
+will generate a screen with as much windows as the number of file matching `*.txt` with the `vim` command
+
+    $ screen-generator -x 5 -y  5 -e -N
+
+Launch directly a screen descibed by a 5x5 grid with shells as commands. 
+
+If the command chain is not given, `screen-generator` prompt for commands interactively.
 
 # Install
 
 ## 1) Debian package
 
-* `$ dpkg -i screen-generator.deb`
+* `$ dpkg -i screen-generator_0.5-1.deb`
 
 ## 2) PPA package (only available from version v0.4)
 
@@ -28,14 +36,19 @@ will open a screen with as much windows as the number of file matching `*.torren
 
 # Documentation
 
-* `man screen-genrator`
+* `man screen-generator`
 * `screen-generator --help`
-* `/usr/share/screen-generator/examples/*`
+* `/usr/share/doc/screen-generator/examples/*`
+
+# Author
+
+For any suggestion, please send a mail to mailto:jean.yvan.tissot[at]gmail.com
+
 
 # Bugs
 
-Please report any bug on `https://github.com/boddhissattva/screen-generator/issues`
+Please report any bug at `https://github.com/boddhissattva/screen-generator/issues`
 
 # Version
 
-screen-generator `v0.4`
+screen-generator `v0.5`

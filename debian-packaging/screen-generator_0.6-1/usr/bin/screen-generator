@@ -20,7 +20,7 @@ bindkey "^v" eval "split -v" "focus right" screen
 bindkey "^o" only
 bindkey "^y" quit'
 
-HORIZONTAL_DISTANCE=55
+HORIZONTAL_DISTANCE=31
 
 # DEFINE DEBUG FUNCTION
 
@@ -77,64 +77,58 @@ for i in c x y d m n o t h v
 do
 declare -a $i
 done
-a=
-c[1]="COMMAND"
-c[2]="Specify window command. COMMAND is a chain of commands separated by colons: cmd1;cmd2;...;cmd3. Use + to replace * in a file pattern to expand the command"
+
+c[1]="-c COMMAND CHAIN"
+c[2]="Specify window commands from a command chain COMMAND CHAIN separated by commas (e.g 'bash;watch ls;watch lsblk') or by a newlines." 
 x[1]="-x X"
-x[2]="Specify the number of columns"
+x[2]="Specify the number of lines. This will overwrite the value guessed if command chain is given."
 y[1]="-y Y"
-y[2]="Specify the number of lines"
+y[2]="Specify the number of columns. This will overwrite the value guessed if command chain is given."
 d[1]="-d DESTINATION PATH" 
 d[2]="Specify the destination of the generated configuration file"
 m[1]="-m WINDOW NUMBER"
-m[2]="Move the cursor to WINDOW NUMBER. Windows are numbered from top-left to bottom right, line by lines"
-e[1]="-e"             
-e[2]="Execute screen directly"
+m[2]="Move the cursor to WINDOW NUMBER. Windows are numbered from top-left to bottom right, line by lines."
+n[1]="-n"             
+n[2]="Prevent from executing screen. It only generate screen configuration file"
 N[1]="-N"             
-N[2]="Disable the interactive mode"
-o[1]="-o OPTIONS"
-o[2]="Add options to the screen configuration file. OPTIONS is a chain in the format 'OPTION_1;...;OPTION_N'"
+N[2]="Disable the interactive mode if no command chain are given"
+o[1]="-o OPTION CHAIN"
+o[2]="Add lines to the screen configuration file. OPTION CHAIN is a chain in the format 'OPTION_1;...;OPTION_N'. "
+
+t[1]="-t"
+t[2]="Print the newly generated screen configuration file on terminal and prevent screen from running."
 h[1]="-h, --help"  
 h[2]="Display help"
 v[1]="-v" 
 v[2]="Activate debug mode"
-V[1]="-V" 
-V[2]="Print current version and exit"
 
 C1="${c[1]}
 ${d[1]}
-${e[1]}
 ${h[1]}
 ${m[1]}
+${n[1]}
 ${N[1]}
 ${o[1]}
+${t[1]}
 ${v[1]}
-${V[1]}
 ${x[1]}
 ${y[1]}"
 
 C2="${c[2]}
 ${d[2]}
-${e[2]}
 ${h[2]}
 ${m[2]}
+${n[2]}
 ${N[2]}
 ${o[2]}
+${t[2]}
 ${v[2]}
-${V[2]}
 ${x[2]}
 ${y[2]}"
-WIDTH=24
+WIDTH=18
 DIST=4
+paste <(echo "$C1" | fold -w $WIDTH ) <(echo "$C2" | fold -w "$(( $(tput cols) - $DIST -$WIDTH ))"      ) | pr -t -e$((WIDTH+DIST))
 
-echo -e "
-    screen-generator [ COMMAND CHAIN ]  [-e] [-x X] [-y Y] [-d DESTINATION PATH] [-m WINDOW NUMBER] [-o OPTIONS] [-v] [-V]
-" 
-
-paste <(echo "$C1" | fold -w $WIDTH ) <(echo "$C2" | fold -w "$(( $(tput cols) - $DIST -$WIDTH ))"      ) | pr -t -e$((WIDTH+DIST)) | sed 's/^/    /'
-echo " "
-echo "    See \"man $0\" for full documentation"
-echo " "
 }
 
 function echo-word-middle-debug(){
@@ -150,7 +144,8 @@ function echo-word-middle-debug(){
 
 CHECK_d=0
 CHECK_v=0
-CHECK_e=0
+CHECK_n=0
+CHECK_t=0
 CHECK_h=0
 CHECK_N=0
 CHECK_V=0
@@ -183,17 +178,21 @@ shift # past argument
 OPTION_CHAIN="$2"
 shift # past argument
 ;;
--e)
-CHECK_e=1
+-n)
+CHECK_n=1
  # past argument
 ;;
--v|--verbose)
+-t)
+CHECK_t=1
+ # past argument
+;;
+-v)
 CHECK_v=1
 ;;
 -V|--version)
 CHECK_V=1
 ;;
--m|--move)
+-m)
 CURSOR_WINDOW_NUMBER_GIVEN=$2
 shift
 ;;
@@ -217,7 +216,8 @@ esac
 shift # past argument or value
 done
 echo-word-middle-debug "Initial values"
-echo-debug CHECK_e=$CHECK_e
+echo-debug CHECK_n=$CHECK_n
+echo-debug CHECK_t=$CHECK_t
 echo-debug CHECK_v=$CHECK_v
 echo-debug COMMAND_CHAIN=$COMMAND_CHAIN
 echo-debug OPTION_CHAIN=$OPTION_CHAIN
@@ -229,7 +229,7 @@ echo-debug EDITOR=$DEFAULT_EDITOR
 #DISPLAY HELP IF -h or --help FLAGS ARE SET
 if [ $CHECK_V -eq 1 ]
 then
-    echo "screen-generator version $VERSION (1.07.2016)"
+    echo "screen-generator v$VERSION"
     exit
 fi
 if [ $CHECK_h -eq 1 ]
@@ -242,8 +242,8 @@ fi
 if [ -z "$COMMAND_CHAIN" ] && [  "$CHECK_N" -eq 0 ] && [  "$CHECK_V" -eq 0 ]
 then
 echo-debug "Initiate interactive mode"
-echo -n "Enter cmds and press CTRL+D > "
-STRING="Enter cmds and press CTRL+D > "
+echo -n "screen-generator> "
+STRING="screen-generator> "
 while read -r COMMAND_INT ;
 do
 
@@ -526,7 +526,7 @@ echo-word-middle-debug "Move cursor to the proper window"
 # FIND WHETHER THERE IS $EDITOR OR $SHELL_NAME IN THE COMMAND CHAIN
 if ! [ -z  "$( echo "$COMMAND_CHAIN" | grep "$DEFAULT_EDITOR")" ]
 then
-    CURSOR_WINDOW_NUMBER_GIVEN="$(echo "$COMMAND_CHAIN" | sed 's/^[ ]*\;//' |  sed 's/;[ ]*$//'  | sed 's/;/\n/g' | nl | grep "$DEFAULT_EDITOR" | awk '{ print $1 }'|sed -n 1p )"
+    CURSOR_WINDOW_NUMBER_GIVEN="$(echo "$COMMAND_CHAIN" | sed 's/^[ ]*\;//' |  sed 's/;[ ]*$//'  | sed 's/;/\n/g' | nl | grep "$DEFAULT_EDITOR" | awk '{ print $1 }')"
     
 echo-debug "Taking the window number of the first editor at window number $CURSOR_WINDOW_NUMBER_GIVEN"
 
@@ -573,7 +573,7 @@ done
 
 echo $DEFAULT_OPTIONS>> $SCREEN_CONFIGURATION_FILE
 echo "$DEFAULT_SHORTCUTS">> $SCREEN_CONFIGURATION_FILE
-if [ "$CHECK_e" -eq "1" ]
+if [ $CHECK_t -eq "0" ]
     then
 echo -n "Configuration file of size ${NUMBER_OF_LINES}x${NUMBER_OF_COLUMNS}" 
 if ! [ -z "$COMMAND_CHAIN" ]
@@ -584,9 +584,9 @@ echo -ne " generated at $(readlink -f $SCREEN_CONFIGURATION_FILE)\n"
 fi
 
 
-# START SCREEN IF OPTION -e IS SET
+# START SCREEN UNLESS OPTION -n IS SET
 
-if [ "$CHECK_e" -eq "1" ]
+if [ $CHECK_n -eq "0" ] && [ $CHECK_t -eq "0" ] && [ $CHECK_v -eq "0" ]
 then
 echo -e "\nStarting screen from $SCREEN_CONFIGURATION_FILE"
 screen -c $SCREEN_CONFIGURATION_FILE
@@ -594,7 +594,7 @@ fi
 
 # CAT SCREEN CONFIGURATION FILE if -t IS SET
 
-if ! [ $CHECK_e -eq 1 ] 
+if ! [ $CHECK_t -eq "0" ] || ! [ $CHECK_v -eq "0" ]
 then
 # PRINT HORIZONTAL LINE WITH WORD IN THE MIDDLE
 echo-word-middle "$SCREEN_CONFIGURATION_FILE"

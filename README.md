@@ -46,7 +46,7 @@ For any suggestion, please send a mail to [jean.yvan.tissot[at]gmail.com](mailto
 
 # Bugs
 
-Please report any bug at [https://github.com/boddhissattva/screen-generator/issues]
+Please report any bug at [https://github.com/boddhissattva/screen-generator/issues](https://github.com/boddhissattva/screen-generator/issues)
 
 # Version
 

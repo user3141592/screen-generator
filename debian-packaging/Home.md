@@ -1,1 +1,0 @@
-../../screen-generator.wiki/Home.md

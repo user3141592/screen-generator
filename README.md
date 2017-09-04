@@ -29,14 +29,6 @@ uses the `-e` flag which allows to directly launch a screen descibed by a `5x5` 
 * `screen-generator --help`
 * `/usr/share/doc/screen-generator/examples/*`
 
-# Author
-
-For any suggestion, please send a mail to [jean.yvan.tissot[at]gmail.com](mailto:jean.yvan.tissot[at]gmail.com)
-
-# Bugs
-
-Please report any bug at [https://github.com/boddhissattva/screen-generator/issues](https://github.com/boddhissattva/screen-generator/issues)
-
 # Version
 
 `screen-generator v0.5`

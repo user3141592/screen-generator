@@ -1,4 +1,4 @@
-# What is screen-generator?
+## Overview
 
 `screen-generator` generates screen configuration files and launches screen by providing a chains of commands and/or window configurations
 
@@ -18,17 +18,17 @@ will generate a screen with as much windows as the number of file matching `*.tx
 
 uses the `-e` flag which allows to directly launch a screen descibed by a `5x5` grid with shells as commands. 
 
-# Install
+## Install
 
      `$ dpkg -i screen-generator_0.5-1.deb`
 
 
-# Documentation
+## Documentation
 
 * `man screen-generator`
 * `screen-generator --help`
 * `/usr/share/doc/screen-generator/examples/*`
 
-# Version
+## Version
 
 `screen-generator v0.5`
